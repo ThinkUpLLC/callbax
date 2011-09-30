@@ -1,4 +1,4 @@
 .*
 webapp/config.inc.php
 tests/config.tests.inc.php
-webapp/_lib/compiled_view/*.php
+webapp/_lib/view/compiled_view/*.php

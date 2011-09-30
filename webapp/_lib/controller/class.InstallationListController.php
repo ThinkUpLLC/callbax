@@ -8,7 +8,7 @@ class InstallationListController extends Controller {
 
         $total_installations = $installation_dao->getTotal();
         //for now, show single page of all installations
-        $installations_page = $installation_dao->getPage(1, $total_installations);
+        $installations_page = $installation_dao->getAll();
 
         $this->addToView('installations', $installations_page['installations']);
         //        $this->addToView('next_page', $installations_page['next_page']);

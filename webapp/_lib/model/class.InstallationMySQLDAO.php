@@ -39,7 +39,7 @@ class InstallationMySQLDAO extends PDODAO {
 
     public function getPage($page, $limit){
         $q  = "SELECT i.*, u.* FROM #prefix#installations i JOIN #prefix#users u ON u.installation_id = i.id ";
-        $q .= "ORDER BY last_seen DESC LIMIT :start_on, :limit";
+        $q .= "ORDER BY i.id DESC, last_seen ASC LIMIT :start_on, :limit";
         $vars = array(
             ':limit'=>($limit+1),
             ':start_on'=>($limit*($page-1))
@@ -54,6 +54,14 @@ class InstallationMySQLDAO extends PDODAO {
         }
         $result['prev_page'] = ($page==1)?false:($page-1);
         $result['installations'] = $installations;
+        return $result;
+    }
+
+    public function getAll(){
+        $q  = "SELECT i.*, u.* FROM #prefix#installations i JOIN #prefix#users u ON u.installation_id = i.id ";
+        $q .= "ORDER BY i.id  DESC, last_seen ASC";
+        $ps = $this->execute($q);
+        $result['installations'] = $this->getDataRowsAsArrays($ps);
         return $result;
     }
 
