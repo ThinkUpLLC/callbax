@@ -9,6 +9,10 @@ class Installation {
      */
     var $url;
     /**
+     * @var int Total service users detected on this installation.
+     */
+    var $user_count;
+    /**
      * @var str Version installation is running
      */
     var $version;
@@ -20,6 +24,7 @@ class Installation {
         if ($row) {
             $this->id = $row['id'];
             $this->url = $row['url'];
+            $this->user_count = $row['user_count'];
             $this->version = $row['version'];
             $this->last_seen = $row['last_seen'];
         }

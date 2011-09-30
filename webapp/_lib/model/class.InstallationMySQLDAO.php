@@ -1,5 +1,5 @@
 <?php
-class InstallationMySQLDAO extends PDODAO implements InstallationDAO {
+class InstallationMySQLDAO extends PDODAO {
 
     public function insert($url, $version) {
         $q  = "INSERT IGNORE INTO #prefix#installations  (url, version) VALUES ( :url, :version) ";
@@ -77,6 +77,34 @@ class InstallationMySQLDAO extends PDODAO implements InstallationDAO {
         foreach ($results as $result) {
             $stats[] = array('version'=> $result['version'], 'count'=>$result['total_installs_per_version'],
             'percentage'=>round(($result['total_installs_per_version']*100)/$total_users));
+        }
+        return $stats;
+    }
+
+    public function updateUserCount($installation_id) {
+        $q  = "UPDATE #prefix#installations i SET user_count = (SELECT COUNT(*) FROM #prefix#users u ";
+        $q .= "WHERE u.installation_id = i.id) WHERE i.id = :installation_id;";
+        $vars = array(
+            ':installation_id'=>$installation_id
+        );
+        $ps = $this->execute($q, $vars);
+        return $this->getUpdateCount($ps);
+    }
+
+    public function getUserCountDistribution() {
+        $q  = "SELECT user_count, COUNT( * ) AS total_installs_with_user_count FROM #prefix#installations ";
+        $q .= "GROUP BY user_count";
+        $ps = $this->execute($q);
+        $results = $this->getDataRowsAsArrays($ps);
+
+        $total_installs = 0;
+        foreach ($results as $result) {
+            $total_installs = $total_installs + $result['total_installs_with_user_count'];
+        }
+        $stats = array();
+        foreach ($results as $result) {
+            $stats[] = array('user_count'=> $result['user_count'], 'count'=>$result['total_installs_with_user_count'],
+            'percentage'=>round(($result['total_installs_with_user_count']*100)/$total_installs));
         }
         return $stats;
     }

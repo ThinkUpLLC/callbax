@@ -6,21 +6,21 @@ class InstallationListController extends Controller {
         $installation_dao = new InstallationMySQLDAO();
         $user_dao = new UserMySQLDAO();
 
-        $page = (isset($_GET['p']))?$_GET['p']:1;
-        $limit = (isset($_GET['l']))?$_GET['l']:50;
-
-        $installations_page = $installation_dao->getPage($page, $limit);
+        $total_installations = $installation_dao->getTotal();
+        //for now, show single page of all installations
+        $installations_page = $installation_dao->getPage(1, $total_installations);
 
         $this->addToView('installations', $installations_page['installations']);
-        $this->addToView('next_page', $installations_page['next_page']);
-        $this->addToView('prev_page', $installations_page['prev_page']);
+        //        $this->addToView('next_page', $installations_page['next_page']);
+        //        $this->addToView('prev_page', $installations_page['prev_page']);
 
-        $this->addToView('total_installations', $installation_dao->getTotal());
+        $this->addToView('total_installations', $total_installations);
 
         $this->addToView('first_seen_installation_date', $installation_dao->getFirstSeenInstallationDate());
 
         $this->addToView('service_stats', $user_dao->getServiceTotals());
         $this->addToView('version_stats', $installation_dao->getVersionTotals());
+        $this->addToView('usercount_stats', $installation_dao->getUserCountDistribution());
         return $this->generateView();
     }
 }

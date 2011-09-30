@@ -9,6 +9,9 @@ class ProcessCallbackController extends Controller {
         $service = null;
         $username = null;
         $url = null;
+
+        $installation_ids_to_update = array();
+
         $callbacks = $callback_dao->get(20);
         while (count($callbacks) > 0 ) {
             foreach ($callbacks as $callback) {
@@ -33,8 +36,14 @@ class ProcessCallbackController extends Controller {
                         }
 
                         $user_dao->insert($installation_id, $service, $username);
+                        $installation_ids_to_update[] = $installation_id;
                     }
                 }
+                //update user counts for each installation
+                foreach ($installation_ids_to_update as $id) {
+                    $installation_dao->updateUserCount($id);
+                }
+
                 //delete callback
                 $callback_dao->delete($callback->id);
                 //reset vars for next loop

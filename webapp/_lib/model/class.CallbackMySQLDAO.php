@@ -1,5 +1,5 @@
 <?php
-class CallbackMySQLDAO extends PDODAO implements CallbackDAO {
+class CallbackMySQLDAO extends PDODAO {
     public function insert($referrer, $version) {
         $q  = "INSERT INTO #prefix#callbacks ";
         $q .= "(referrer, version) ";

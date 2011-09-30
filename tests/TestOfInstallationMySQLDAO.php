@@ -97,6 +97,44 @@ class TestOfInstallationMySQLDAO extends CallbaxUnitTestCase {
         $this->assertEqual($result['prev_page'], 2);
     }
 
+    public function testUpdateUserCount() {
+        $builders = array();
+        $i = 45;
+        while ($i > 0) {
+            $install_builder = FixtureBuilder::build('installations', array('url'=>'http://example.com/thinkup'.$i,
+            'version'=>'0.15', 'last_seen'=>'-'.$i.'h'));
+            $builders[] = $install_builder;
+            $id = $install_builder->columns['last_insert_id'];
+            $user_builder = FixtureBuilder::build('users', array('installation_id'=>$id, 'service'=>'twitter',
+            'username'=>'user'.$i));
+            $builders[] = $user_builder;
+            $i --;
+        }
+
+        $installation_dao = new InstallationMySQLDAO();
+        //installation doesn't exist
+        $result = $installation_dao->updateUserCount(50);
+        $this->assertEqual($result, 0);
+
+        //installation does exist, has 1 user
+        $result = $installation_dao->updateUserCount(1);
+        $this->assertEqual($result, 1);
+        $ps = InstallationMySQLDAO::$PDO->query("SELECT user_count FROM cb_installations WHERE id=1;");
+        $data = $ps->fetchAll();
+        $this->assertEqual($data[0]['user_count'], 1);
+
+        //installation exists, has 2 users
+        $user_builder = FixtureBuilder::build('users', array('installation_id'=>1, 'service'=>'twitter',
+        'username'=>'user_yay'));
+        $builders[] = $user_builder;
+
+        $result = $installation_dao->updateUserCount(1);
+        $this->assertEqual($result, 1);
+        $ps = InstallationMySQLDAO::$PDO->query("SELECT user_count FROM cb_installations WHERE id=1;");
+        $data = $ps->fetchAll();
+        $this->assertEqual($data[0]['user_count'], 2);
+    }
+
     public function testGetTotal(){
         $installation_dao = new InstallationMySQLDAO();
         $total = $installation_dao->getTotal();
@@ -191,4 +229,55 @@ class TestOfInstallationMySQLDAO extends CallbaxUnitTestCase {
         $this->assertEqual($result[3]['percentage'], '56');
     }
 
+    public function testOfGetUserCountDistribution() {
+        $dao = new InstallationMySQLDAO();
+        $result = $dao->getUserCountDistribution();
+        $this->assertEqual(count($result), 0);
+
+        $i = 57;
+        while ($i > 0) {
+            $user_count_randomizer = $i%7;
+            switch ($user_count_randomizer) {
+                case 1:
+                    $user_count = '1';
+                    break;
+                case 2:
+                    $user_count = '2';
+                    break;
+                case 3:
+                    $user_count = '3';
+                    break;
+                default:
+                    $user_count = '4';
+                    break;
+            }
+            $install_builder = FixtureBuilder::build('installations', array('url'=>'http://example.com/thinkup'.$i,
+            'user_count'=>$user_count, 'last_seen'=>(($i==45)?'2000-12-31 01:00:00':'-'.$i.'h')));
+            $builders[] = $install_builder;
+            $id = $install_builder->columns['last_insert_id'];
+            $user_builder = FixtureBuilder::build('users', array('installation_id'=>$id, 'service'=>'Twitter',
+            'username'=>'user'.$i));
+            $builders[] = $user_builder;
+            $i --;
+        }
+        $result = $dao->getUserCountDistribution();
+
+        $this->assertEqual(count($result), 4);
+
+        $this->assertEqual($result[0]['user_count'], 1);
+        $this->assertEqual($result[0]['count'], '9');
+        $this->assertEqual($result[0]['percentage'], '16');
+
+        $this->assertEqual($result[1]['user_count'], 2);
+        $this->assertEqual($result[1]['count'], '8');
+        $this->assertEqual($result[1]['percentage'], '14');
+
+        $this->assertEqual($result[2]['user_count'], 3);
+        $this->assertEqual($result[2]['count'], '8');
+        $this->assertEqual($result[2]['percentage'], '14');
+
+        $this->assertEqual($result[3]['user_count'], 4);
+        $this->assertEqual($result[3]['count'], '32');
+        $this->assertEqual($result[3]['percentage'], '56');
+    }
 }

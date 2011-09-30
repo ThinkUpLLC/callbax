@@ -1,5 +1,5 @@
 <?php
-class UserMySQLDAO extends PDODAO implements UserDAO {
+class UserMySQLDAO extends PDODAO {
     public function insert($installation_id, $service, $username) {
         $q  = "INSERT IGNORE INTO #prefix#users (installation_id, service, username) ";
         $q .= "VALUES ( :installation_id, :service, :username ) ";

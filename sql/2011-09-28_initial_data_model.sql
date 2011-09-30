@@ -10,11 +10,10 @@ CREATE TABLE IF NOT EXISTS cb_installations (
   id int(11) NOT NULL AUTO_INCREMENT COMMENT 'Internal unique ID',
   url varchar(255) NOT NULL COMMENT 'Base URL of installation',
   version varchar(10) NOT NULL COMMENT 'Version installation is running',
-  user_count int(11) NOT NULL COMMENT 'Total service users detected on this installation.',
-  last_seen timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Last seen timestamp',
+  last_seen TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT  'Last seen timestamp',
   PRIMARY KEY (id),
   UNIQUE KEY url (url)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COMMENT='Installations';
+) ENGINE=MyISAM DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT='Installations';
 
 CREATE TABLE IF NOT EXISTS cb_users (
   id int(11) NOT NULL AUTO_INCREMENT COMMENT 'Internal unique ID',

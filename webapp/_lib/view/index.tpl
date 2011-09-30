@@ -75,26 +75,22 @@ table.gridtable td {
 {if $service_stats}
 <div style="float:left">
 Service users by network<br/>
-<img src="http://chart.apis.google.com/chart?cht=p&chd=t:{foreach from=$service_stats key=skey item=stat name=sloop}{$stat.percentage}{if !$smarty.foreach.sloop.last},{/if}{/foreach}&chs=400x200&chl={foreach from=$service_stats key=skey item=stat name=sloop}{$stat.service|urlencode}+({$stat.count}){if !$smarty.foreach.sloop.last}|{/if}{/foreach}&chco=6184B5,E6E6E6"/>
+<img src="http://chart.apis.google.com/chart?cht=p&chd=t:{foreach from=$service_stats key=skey item=stat name=sloop}{$stat.percentage}{if !$smarty.foreach.sloop.last},{/if}{/foreach}&chs=400x200&chl={foreach from=$service_stats key=skey item=stat name=sloop}{$stat.service|urlencode}+{'('|urlencode}{$stat.percentage}{'%)'|urlencode}{if !$smarty.foreach.sloop.last}|{/if}{/foreach}&chco=6184B5,E6E6E6"/>
 </div>
 {/if}
 {if $version_stats}
-Installations by version
-<img src="http://chart.apis.google.com/chart?cht=p&chd=t:{foreach from=$version_stats key=skey item=stat name=sloop}{$stat.percentage}{if !$smarty.foreach.sloop.last},{/if}{/foreach}&chs=400x200&chl={foreach from=$version_stats key=skey item=stat name=sloop}v{$stat.version|urlencode}+({$stat.count}){if !$smarty.foreach.sloop.last}|{/if}{/foreach}&chco=6184B5,E6E6E6"/>
+Installations by version (v0.12+ only)
+<img src="http://chart.apis.google.com/chart?cht=p&chd=t:{foreach from=$version_stats key=skey item=stat name=sloop}{$stat.percentage}{if !$smarty.foreach.sloop.last},{/if}{/foreach}&chs=400x200&chl={foreach from=$version_stats key=skey item=stat name=sloop}v{$stat.version|urlencode}+{'('|urlencode}{$stat.percentage}{'%)'|urlencode}{if !$smarty.foreach.sloop.last}|{/if}{/foreach}&chco=6184B5,E6E6E6"/>
 {/if}
 <br style="clear:both">
 <br><br>
+{if $usercount_stats}
+Service user count distribution<br />
+<img src="http://chart.apis.google.com/chart?cht=p&chd=t:{foreach from=$usercount_stats key=skey item=stat name=sloop}{$stat.percentage}{if !$smarty.foreach.sloop.last},{/if}{/foreach}&chs=400x200&chl={foreach from=$usercount_stats key=skey item=stat name=sloop}{$stat.user_count}+user{if $stat.user_count > 1}s{/if}+{'('|urlencode}{$stat.percentage}{'%)'|urlencode}{if !$smarty.foreach.sloop.last}|{/if}{/foreach}&chco=6184B5,E6E6E6"/>
+{/if}
+<br><br>
 
 
-<div>
-{if $next_page}
-<a href="?p={$next_page}">&larr;Older</a>
-{/if}
-&nbsp;
-{if $prev_page}
-<a href="?p={$prev_page}">Newer&rarr;</a>
-{/if}
-</div>
 <table class="gridtable">
     <tr>
         <th>Location</th>
