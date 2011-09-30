@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS cb_installations (
   last_seen timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Last seen timestamp',
   PRIMARY KEY (id),
   UNIQUE KEY url (url)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COMMENT='Installations';
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8_general_ci COMMENT='Installations';
 
 CREATE TABLE IF NOT EXISTS cb_users (
   id int(11) NOT NULL AUTO_INCREMENT COMMENT 'Internal unique ID',
