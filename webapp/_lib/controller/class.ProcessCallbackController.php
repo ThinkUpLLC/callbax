@@ -24,9 +24,16 @@ class ProcessCallbackController extends Controller {
                     if (isset($service) && isset($username) && !isset($parsed_query['i'])) {
                         $service = ucwords(urldecode($service));
                         $username = urldecode($username);
+                        //prep installation URL
+                        //strip www.
+                        $host = preg_replace('#^www\.(.+\.)#i', '$1', $parsed_referer['host']);
+                        $path = $parsed_referer['path'];
+                        //strip index.php
+                        $path = str_replace('user/index.php', '', $path);
+                        $path = str_replace('index.php', '', $path);
+
                         //add installation
-                        $url = $parsed_referer['scheme'].'://'.$parsed_referer['host'].
-                        str_replace('index.php', '', $parsed_referer['path']);
+                        $url = $parsed_referer['scheme'].'://'.$host.$path;
                         $installation = $installation_dao->get($url);
                         if (count($installation) == 0) { //doesn't exist, insert it
                             $installation_id = $installation_dao->insert($url, $callback->version);

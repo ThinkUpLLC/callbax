@@ -27,13 +27,13 @@ class TestOfProcessCallbackController extends CallbaxUnitTestCase {
 
         //add callbacks to process
         $builders[] = FixtureBuilder::build('callbacks', array('id'=>1,
-        'referrer'=>'http://dev.thinkup.com/index.php?u=Gina+Trapani&n=google%2B', 'version'=>'0.15', 
+        'referrer'=>'http://dev.thinkup.com/index.php?u=Gina+Trapani&n=google%2B', 'version'=>'0.15',
         'last_seen'=>'-1h'));
         $builders[] = FixtureBuilder::build('callbacks', array('id'=>2,
-        'referrer'=>'http://dev.thinkup.com/account/?m=manage', 'version'=>'0.14', 
+        'referrer'=>'http://dev.thinkup.com/account/?m=manage', 'version'=>'0.14',
         'last_seen'=>'-10m'));
         $builders[] = FixtureBuilder::build('callbacks', array('id'=>3,
-        'referrer'=>'http://dev.thinkup.com/index.php?u=ginatrapani&n=twitter', 'version'=>'0.15', 
+        'referrer'=>'http://dev.thinkup.com/index.php?u=ginatrapani&n=twitter', 'version'=>'0.15',
         'last_seen'=>'-1h'));
         $builders[] = FixtureBuilder::build('callbacks', array('id'=>4,
         'referrer'=>'http://expertlabs.aaas.org/thinkup01/index.php?u=The+White+House&n=facebook+page',
@@ -45,7 +45,16 @@ class TestOfProcessCallbackController extends CallbaxUnitTestCase {
         'referrer'=>'http://smarterware.org/thinkup/index.php?u=Gina+Trapani&n=facebook+page',
         'version'=>'0.15', 'last_seen'=>'-1h'));
         $builders[] = FixtureBuilder::build('callbacks', array('id'=>7,
-        'referrer'=>'http://timomcd.com/thinkup/user/?u=MarinaCafe&n=twitter&i=timomcd',
+        'referrer'=>'http://timomcd.com/thinkup/user/?u=YaYayo&n=twitter&i=timomcd',
+        'version'=>'0.15', 'last_seen'=>'-1h'));
+        $builders[] = FixtureBuilder::build('callbacks', array('id'=>8,
+        'referrer'=>'http://timomcd.com/thinkup/index.php?u=YaYayo&n=twitter',
+        'version'=>'0.15', 'last_seen'=>'-1h'));
+        $builders[] = FixtureBuilder::build('callbacks', array('id'=>9,
+        'referrer'=>'http://www.timomcd.com/thinkup/index.php?u=YaYayo&n=twitter',
+        'version'=>'0.15', 'last_seen'=>'-1h'));
+        $builders[] = FixtureBuilder::build('callbacks', array('id'=>10,
+        'referrer'=>'http://www.timomcd.com/thinkup/user/index.php?u=YaYayoLLL&n=twitter',
         'version'=>'0.15', 'last_seen'=>'-1h'));
 
         $results = $controller->control();
@@ -53,13 +62,14 @@ class TestOfProcessCallbackController extends CallbaxUnitTestCase {
 
         $ps = CallbackMySQLDAO::$PDO->query("SELECT COUNT(*) AS total FROM cb_installations;");
         $data = $ps->fetchAll();
-        $this->assertEqual($data[0]['total'], 3);
+        $this->assertEqual($data[0]['total'], 4);
 
         $ps = CallbackMySQLDAO::$PDO->query("SELECT * FROM cb_installations;");
         $data = $ps->fetchAll();
         $this->assertEqual($data[0]['url'], 'http://dev.thinkup.com/');
         $this->assertEqual($data[1]['url'], 'http://expertlabs.aaas.org/thinkup01/');
         $this->assertEqual($data[2]['url'], 'http://smarterware.org/thinkup/');
+        $this->assertEqual($data[3]['url'], 'http://timomcd.com/thinkup/');
 
         $ps = CallbackMySQLDAO::$PDO->query("SELECT * FROM cb_users;");
         $data = $ps->fetchAll();

@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS cb_callbacks (
   version varchar(10) NOT NULL COMMENT 'Version number installation queried about',
   last_seen timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Last seen timestamp',
   PRIMARY KEY (id)
-) ENGINE=MyISAM DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT='Raw callbacks.';
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Raw callbacks.';
 
 CREATE TABLE IF NOT EXISTS cb_installations (
   id int(11) NOT NULL AUTO_INCREMENT COMMENT 'Internal unique ID',
@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS cb_installations (
   last_seen timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Last seen timestamp',
   PRIMARY KEY (id),
   UNIQUE KEY url (url)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8_general_ci COMMENT='Installations';
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Installations';
 
 CREATE TABLE IF NOT EXISTS cb_users (
   id int(11) NOT NULL AUTO_INCREMENT COMMENT 'Internal unique ID',
@@ -24,4 +24,4 @@ CREATE TABLE IF NOT EXISTS cb_users (
   PRIMARY KEY (id),
   UNIQUE KEY user_installation (installation_id,service,username),
   KEY installation_id (installation_id)
-) ENGINE=MyISAM DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT='Installation service users';
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Installation service users';
