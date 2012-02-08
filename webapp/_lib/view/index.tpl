@@ -46,12 +46,12 @@ $version_stats (optional) Array of counts and percentages of installations by ve
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </a>
-          <a class="brand" href="#">Callbax: ThinkUp Stats</a>
+          <a class="brand" href="http://thinkupapp.com/callbax/">Callbax: <strong>Think</strong>Up Stats</a>
           <div class="nav-collapse">
             <ul class="nav">
               <li class="active"><a href="#">Home</a></li>
-              <li><a href="#about">About</a></li>
-              <li><a href="#contact">Contact</a></li>
+              <li><a href="http://thinkupapp.com/">ThinkUpApp.com</a></li>
+              <li><a href="http://reports.expertlabs.org/fsmi/">FSMI</a></li>
             </ul>
           </div><!--/.nav-collapse -->
         </div>
@@ -60,26 +60,26 @@ $version_stats (optional) Array of counts and percentages of installations by ve
 
     <div class="container">
 
-	<div class="span2 alert alert-error">
+	<div class="span2 offset1 alert alert-error">
 		<h1>{$total_installations} admins<h1>
 		<h4>used ThinkUp in the last<h4>
 		<h1>{$first_seen_installation_date|relative_datetime}</h1>
 				
 	</div>
 
-	<div class="span6 offset1">
+	<div class="span5 offset1">
           <div class="accordion" id="accordion2">
           
 {if $service_stats}
             <div class="accordion-group">
               <div class="accordion-heading">
-                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
+                <a class="accordion-toggle btn" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
                   By Network
                 </a>
               </div>
               <div id="collapseOne" class="accordion-body collapse in">
                 <div class="accordion-inner">
-                  <img src="http://chart.apis.google.com/chart?cht=p&chd=t:{foreach from=$service_stats key=skey item=stat name=sloop}{$stat.percentage}{if !$smarty.foreach.sloop.last},{/if}{/foreach}&chs=400x200&chl={foreach from=$service_stats key=skey item=stat name=sloop}{$stat.service|urlencode}+{'('|urlencode}{$stat.percentage}{'%)'|urlencode}{if !$smarty.foreach.sloop.last}|{/if}{/foreach}&chco=6184B5,E6E6E6"/>
+                  <img src="http://chart.apis.google.com/chart?cht=p&chd=t:{foreach from=$service_stats key=skey item=stat name=sloop}{$stat.percentage}{if !$smarty.foreach.sloop.last},{/if}{/foreach}&chs=400x200&chl={foreach from=$service_stats key=skey item=stat name=sloop}{$stat.service|urlencode}+{'('|urlencode}{$stat.percentage}{'%)'|urlencode}{if !$smarty.foreach.sloop.last}|{/if}{/foreach}&chco=3E5D9A,3C8ECC"/>
                 </div>
               </div>
             </div>
@@ -88,13 +88,13 @@ $version_stats (optional) Array of counts and percentages of installations by ve
 {if $version_stats}
             <div class="accordion-group">
               <div class="accordion-heading">
-                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">
+                <a class="accordion-toggle btn" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">
                   By Version
                 </a>
               </div>
               <div id="collapseTwo" class="accordion-body collapse">
                 <div class="accordion-inner">
-                  <img src="http://chart.apis.google.com/chart?cht=p&chd=t:{foreach from=$version_stats key=skey item=stat name=sloop}{$stat.percentage}{if !$smarty.foreach.sloop.last},{/if}{/foreach}&chs=400x200&chl={foreach from=$version_stats key=skey item=stat name=sloop}v{$stat.version|urlencode}+{'('|urlencode}{$stat.percentage}{'%)'|urlencode}{if !$smarty.foreach.sloop.last}|{/if}{/foreach}&chco=6184B5,E6E6E6"/>
+                  <img src="http://chart.apis.google.com/chart?cht=p&chd=t:{foreach from=$version_stats key=skey item=stat name=sloop}{$stat.percentage}{if !$smarty.foreach.sloop.last},{/if}{/foreach}&chs=400x200&chl={foreach from=$version_stats key=skey item=stat name=sloop}v{$stat.version|urlencode}+{'('|urlencode}{$stat.percentage}{'%)'|urlencode}{if !$smarty.foreach.sloop.last}|{/if}{/foreach}&chco=3E5D9A,3C8ECC"/>
                 </div>
               </div>
             </div>
@@ -103,13 +103,13 @@ $version_stats (optional) Array of counts and percentages of installations by ve
 {if $usercount_stats}
             <div class="accordion-group">
               <div class="accordion-heading">
-                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseThree">
+                <a class="accordion-toggle btn" data-toggle="collapse" data-parent="#accordion2" href="#collapseThree">
                   # of Users
                 </a>
               </div>
               <div id="collapseThree" class="accordion-body collapse">
                 <div class="accordion-inner">
-                  <img src="http://chart.apis.google.com/chart?cht=p&chd=t:{foreach from=$usercount_stats key=skey item=stat name=sloop}{$stat.percentage}{if !$smarty.foreach.sloop.last},{/if}{/foreach}&chs=400x200&chl={foreach from=$usercount_stats key=skey item=stat name=sloop}{$stat.user_count}+user{if $stat.user_count > 1}s{/if}+{'('|urlencode}{$stat.percentage}{'%)'|urlencode}{if !$smarty.foreach.sloop.last}|{/if}{/foreach}&chco=6184B5,E6E6E6"/>
+                  <img src="http://chart.apis.google.com/chart?cht=p&chd=t:{foreach from=$usercount_stats key=skey item=stat name=sloop}{$stat.percentage}{if !$smarty.foreach.sloop.last},{/if}{/foreach}&chs=400x200&chl={foreach from=$usercount_stats key=skey item=stat name=sloop}{$stat.user_count}+user{if $stat.user_count > 1}s{/if}+{'('|urlencode}{$stat.percentage}{'%)'|urlencode}{if !$smarty.foreach.sloop.last}|{/if}{/foreach}&chco=3E5D9A,3C8ECC"/>
                 </div>
               </div>
             </div>
@@ -117,8 +117,6 @@ $version_stats (optional) Array of counts and percentages of installations by ve
           </div>
           
     </div>
-
-
 
 
 	<div class="span12">
