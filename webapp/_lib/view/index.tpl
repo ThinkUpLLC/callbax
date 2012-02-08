@@ -25,6 +25,7 @@ $version_stats (optional) Array of counts and percentages of installations by ve
 
     <!-- Le styles -->
     <style>
+
     </style>
     <link href="./assets/css/bootstrap.css" rel="stylesheet">
 
@@ -37,7 +38,7 @@ $version_stats (optional) Array of counts and percentages of installations by ve
 
   <body>
 
-    <div class="navbar navbar-fixed-top">
+    <div class="navbar">
       <div class="navbar-inner">
         <div class="container">
           <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
@@ -45,7 +46,7 @@ $version_stats (optional) Array of counts and percentages of installations by ve
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </a>
-          <a class="brand" href="#">Project name</a>
+          <a class="brand" href="#">Callbax: ThinkUp Stats</a>
           <div class="nav-collapse">
             <ul class="nav">
               <li class="active"><a href="#">Home</a></li>
@@ -59,54 +60,101 @@ $version_stats (optional) Array of counts and percentages of installations by ve
 
     <div class="container">
 
-		<div class="statcontainer">{$total_installations}</div> <div class="statexplainer">admins used ThinkUp in the last {$first_seen_installation_date|relative_datetime}</div>
+	<div class="span2 alert alert-error">
+		<h1>{$total_installations} admins<h1>
+		<h4>used ThinkUp in the last<h4>
+		<h1>{$first_seen_installation_date|relative_datetime}</h1>
+				
+	</div>
 
-
-
+	<div class="span6 offset1">
+          <div class="accordion" id="accordion2">
+          
 {if $service_stats}
-		<div style="float:left">
-		Service users by network<br/>
-		<img src="http://chart.apis.google.com/chart?cht=p&chd=t:{foreach from=$service_stats key=skey item=stat name=sloop}{$stat.percentage}{if !$smarty.foreach.sloop.last},{/if}{/foreach}&chs=400x200&chl={foreach from=$service_stats key=skey item=stat name=sloop}{$stat.service|urlencode}+{'('|urlencode}{$stat.percentage}{'%)'|urlencode}{if !$smarty.foreach.sloop.last}|{/if}{/foreach}&chco=6184B5,E6E6E6"/>
-		</div>
+            <div class="accordion-group">
+              <div class="accordion-heading">
+                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
+                  By Network
+                </a>
+              </div>
+              <div id="collapseOne" class="accordion-body collapse in">
+                <div class="accordion-inner">
+                  <img src="http://chart.apis.google.com/chart?cht=p&chd=t:{foreach from=$service_stats key=skey item=stat name=sloop}{$stat.percentage}{if !$smarty.foreach.sloop.last},{/if}{/foreach}&chs=400x200&chl={foreach from=$service_stats key=skey item=stat name=sloop}{$stat.service|urlencode}+{'('|urlencode}{$stat.percentage}{'%)'|urlencode}{if !$smarty.foreach.sloop.last}|{/if}{/foreach}&chco=6184B5,E6E6E6"/>
+                </div>
+              </div>
+            </div>
 {/if}
+
 {if $version_stats}
-		Installations by version (v0.12+ only)
-		<img src="http://chart.apis.google.com/chart?cht=p&chd=t:{foreach from=$version_stats key=skey item=stat name=sloop}{$stat.percentage}{if !$smarty.foreach.sloop.last},{/if}{/foreach}&chs=400x200&chl={foreach from=$version_stats key=skey item=stat name=sloop}v{$stat.version|urlencode}+{'('|urlencode}{$stat.percentage}{'%)'|urlencode}{if !$smarty.foreach.sloop.last}|{/if}{/foreach}&chco=6184B5,E6E6E6"/>
+            <div class="accordion-group">
+              <div class="accordion-heading">
+                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">
+                  By Version
+                </a>
+              </div>
+              <div id="collapseTwo" class="accordion-body collapse">
+                <div class="accordion-inner">
+                  <img src="http://chart.apis.google.com/chart?cht=p&chd=t:{foreach from=$version_stats key=skey item=stat name=sloop}{$stat.percentage}{if !$smarty.foreach.sloop.last},{/if}{/foreach}&chs=400x200&chl={foreach from=$version_stats key=skey item=stat name=sloop}v{$stat.version|urlencode}+{'('|urlencode}{$stat.percentage}{'%)'|urlencode}{if !$smarty.foreach.sloop.last}|{/if}{/foreach}&chco=6184B5,E6E6E6"/>
+                </div>
+              </div>
+            </div>
 {/if}
+
 {if $usercount_stats}
-		Service user count distribution<br />
-		<img src="http://chart.apis.google.com/chart?cht=p&chd=t:{foreach from=$usercount_stats key=skey item=stat name=sloop}{$stat.percentage}{if !$smarty.foreach.sloop.last},{/if}{/foreach}&chs=400x200&chl={foreach from=$usercount_stats key=skey item=stat name=sloop}{$stat.user_count}+user{if $stat.user_count > 1}s{/if}+{'('|urlencode}{$stat.percentage}{'%)'|urlencode}{if !$smarty.foreach.sloop.last}|{/if}{/foreach}&chco=6184B5,E6E6E6"/>
+            <div class="accordion-group">
+              <div class="accordion-heading">
+                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseThree">
+                  # of Users
+                </a>
+              </div>
+              <div id="collapseThree" class="accordion-body collapse">
+                <div class="accordion-inner">
+                  <img src="http://chart.apis.google.com/chart?cht=p&chd=t:{foreach from=$usercount_stats key=skey item=stat name=sloop}{$stat.percentage}{if !$smarty.foreach.sloop.last},{/if}{/foreach}&chs=400x200&chl={foreach from=$usercount_stats key=skey item=stat name=sloop}{$stat.user_count}+user{if $stat.user_count > 1}s{/if}+{'('|urlencode}{$stat.percentage}{'%)'|urlencode}{if !$smarty.foreach.sloop.last}|{/if}{/foreach}&chco=6184B5,E6E6E6"/>
+                </div>
+              </div>
+            </div>
 {/if}
+          </div>
+          
+    </div>
 
 
 
-<table class="gridtable">
-    <tr>
+
+	<div class="span12">
+	
+<table class="table-striped table-bordered table-condensed">
+    <thead>
         <th>Location</th>
-        <th>Version</th>
         <th>Last seen</th>
-        <th>Service user(s)</th>
-    </tr>
+        <th>Ver</th>
+        <th>Service</th>
+        <th>User</th>
+    </thead>
 {assign var="prev_url" value=''}
 {foreach from=$installations key=ikey item=installation name=iloop}
     {if $installation.url neq $prev_url}
-    {if  $prev_url neq ''}
-    </td></tr>
-    {/if}
-    <tr>
-        <td>{if $installation.url neq $prev_url}{$installation.url}{else}&nbsp;{/if}</td>
-        <td>{$installation.version}</td>
-        <td>{$installation.last_seen|relative_datetime} ago</td>
-        <td>{if $installation.service eq "Twitter"}<a href="http://twitter.com/{$installation.username}">@{$installation.username}</a>{else}{$installation.username} | {$installation.service}{/if}
+    <tr style="border-top : 1px solid silver;">
+        <td>{$installation.url}</td>
+        <td><h6>{$installation.last_seen|relative_datetime} ago</h6></td>
+        <td><h6>{$installation.version}</h6></td>
+        <td><h6>{$installation.service}</h6></td>
+        <td>{if $installation.service eq "Twitter"}<a href="http://twitter.com/{$installation.username}">@{$installation.username}</a>{else}{$installation.username}{/if}</td>
+    </tr>
     {else}
-        <br>{if $installation.service eq "Twitter"}<a href="http://twitter.com/{$installation.username}">@{$installation.username}</a>{else}{$installation.username} | {$installation.service}{/if}
+    <tr>
+        <td></td><td></td><td></td><td></td><td>{if $installation.service eq "Twitter"}<a href="http://twitter.com/{$installation.username}">@{$installation.username}</a>{else}{$installation.username} | {$installation.service}{/if}</td>
+    </tr>
     {/if}
     {assign var="prev_url" value=$installation.url}
 {/foreach}
-</td></tr>
 </table>
 
+	</div>
+
     </div> <!-- /container -->
+    
+<div class="footer span 12">&nbsp;</div>
 
     <!-- Le javascript
     ================================================== -->
