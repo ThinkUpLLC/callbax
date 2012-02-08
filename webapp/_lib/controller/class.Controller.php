@@ -96,9 +96,9 @@ abstract class Controller {
      */
     public function getCacheKeyString() {
         $view_cache_key = array();
-        if ($this->getLoggedInUser()) {
-            array_push($view_cache_key, $this->getLoggedInuser());
-        }
+        // if ($this->getLoggedInUser()) {
+        //     array_push($view_cache_key, $this->getLoggedInuser());
+        // }
         $keys = array_keys($_GET);
         foreach ($keys as $key) {
             array_push($view_cache_key, $_GET[$key]);
