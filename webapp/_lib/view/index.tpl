@@ -25,6 +25,7 @@ $version_stats (optional) Array of counts and percentages of installations by ve
 
     <!-- Le styles -->
     <style>
+
     </style>
     <link href="./assets/css/bootstrap.css" rel="stylesheet">
 
