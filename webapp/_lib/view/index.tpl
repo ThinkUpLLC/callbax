@@ -1,3 +1,11 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>ThinkUp Analytics</title>
+    <meta name="description" content="">
+    <meta name="author" content="ThinkUp LLC">
+
 {*
 Render a page of installations.
 
@@ -9,114 +17,148 @@ $first_seen_installation_date (required) The date of the oldest installation rec
 $service_stats (optional) Array of counts and percentages of service users by network
 $version_stats (optional) Array of counts and percentages of installations by version
 *}
-<html>
-<head>
-<title>ThinkUp Analytics</title>
-<style type="text/css">
-{literal}
-body {
-    font-family: verdana,arial,sans-serif;
-}
-table.gridtable {
-    width:100%;
-    font-size:11px;
-    color:#333333;
-    border-width: 1px;
-    border-color: #666666;
-    border-collapse: collapse;
-}
-table.gridtable th {
-    border-width: 1px;
-    padding: 8px;
-    border-style: solid;
-    border-color: #666666;
-    background-color: #dedede;
-}
-table.gridtable td {
-    border-width: 1px;
-    padding: 8px;
-    border-style: solid;
-    border-color: #666666;
-    background-color: #ffffff;
-}
-#canvas {
-    text-align:left;
-    width:800px;
-}
-.statcontainer {
-    background-color:black;
-    font-size:350%;
-    font-weight:bold;
-    color:white;
-    text-align:center;
-    float:left;
-    -moz-border-radius: 7px;
-    border-radius: 7px;
-    padding:5px;
-    margin:0 5px 5px 0;
-}
-.statexplainer {
-    font-size:13px;
-    width:110px;
-    float:left;
-}
-{/literal}
-</style>
 
-</head>
-<body>
-<center>
-<div id="canvas">
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
 
-<div class="statcontainer">{$total_installations}</div> <div class="statexplainer">admins used ThinkUp in the last {$first_seen_installation_date|relative_datetime}</div>
-<br style="clear:both">
-<br><br>
+    <!-- Le styles -->
+    <style>
 
+    </style>
+    <link href="./assets/css/bootstrap.css" rel="stylesheet">
+
+    <!-- Le fav and touch icons -->
+    <link rel="shortcut icon" href="./assets/img/favicon.ico">
+    <link rel="apple-touch-icon" href="./assets/img/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="./assets/img/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="./assets/img/apple-touch-icon-114x114.png">
+  </head>
+
+  <body>
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="http://thinkupapp.com/callbax/">Callbax: <strong>Think</strong>Up Stats</a>
+          <div class="nav-collapse">
+            <ul class="nav">
+              <li class="active"><a href="#">Home</a></li>
+              <li><a href="http://thinkupapp.com/">ThinkUpApp.com</a></li>
+              <li><a href="http://reports.expertlabs.org/fsmi/">FSMI</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+	<div class="span2 offset1 alert alert-error">
+		<h1>{$total_installations} admins<h1>
+		<h4>used ThinkUp in the last<h4>
+		<h1>{$first_seen_installation_date|relative_datetime}</h1>
+				
+	</div>
+
+	<div class="span5 offset1">
+          <div class="accordion" id="accordion2">
+          
 {if $service_stats}
-<div style="float:left">
-Service users by network<br/>
-<img src="http://chart.apis.google.com/chart?cht=p&chd=t:{foreach from=$service_stats key=skey item=stat name=sloop}{$stat.percentage}{if !$smarty.foreach.sloop.last},{/if}{/foreach}&chs=400x200&chl={foreach from=$service_stats key=skey item=stat name=sloop}{$stat.service|urlencode}+{'('|urlencode}{$stat.percentage}{'%)'|urlencode}{if !$smarty.foreach.sloop.last}|{/if}{/foreach}&chco=6184B5,E6E6E6"/>
-</div>
+            <div class="accordion-group">
+              <div class="accordion-heading">
+                <a class="accordion-toggle btn" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
+                  By Network
+                </a>
+              </div>
+              <div id="collapseOne" class="accordion-body collapse in">
+                <div class="accordion-inner">
+                  <img src="http://chart.apis.google.com/chart?cht=p&chd=t:{foreach from=$service_stats key=skey item=stat name=sloop}{$stat.percentage}{if !$smarty.foreach.sloop.last},{/if}{/foreach}&chs=400x200&chl={foreach from=$service_stats key=skey item=stat name=sloop}{$stat.service|urlencode}+{'('|urlencode}{$stat.percentage}{'%)'|urlencode}{if !$smarty.foreach.sloop.last}|{/if}{/foreach}&chco=3E5D9A,3C8ECC"/>
+                </div>
+              </div>
+            </div>
 {/if}
+
 {if $version_stats}
-Installations by version (v0.12+ only)
-<img src="http://chart.apis.google.com/chart?cht=p&chd=t:{foreach from=$version_stats key=skey item=stat name=sloop}{$stat.percentage}{if !$smarty.foreach.sloop.last},{/if}{/foreach}&chs=400x200&chl={foreach from=$version_stats key=skey item=stat name=sloop}v{$stat.version|urlencode}+{'('|urlencode}{$stat.percentage}{'%)'|urlencode}{if !$smarty.foreach.sloop.last}|{/if}{/foreach}&chco=6184B5,E6E6E6"/>
+            <div class="accordion-group">
+              <div class="accordion-heading">
+                <a class="accordion-toggle btn" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">
+                  By Version
+                </a>
+              </div>
+              <div id="collapseTwo" class="accordion-body collapse">
+                <div class="accordion-inner">
+                  <img src="http://chart.apis.google.com/chart?cht=p&chd=t:{foreach from=$version_stats key=skey item=stat name=sloop}{$stat.percentage}{if !$smarty.foreach.sloop.last},{/if}{/foreach}&chs=400x200&chl={foreach from=$version_stats key=skey item=stat name=sloop}v{$stat.version|urlencode}+{'('|urlencode}{$stat.percentage}{'%)'|urlencode}{if !$smarty.foreach.sloop.last}|{/if}{/foreach}&chco=3E5D9A,3C8ECC"/>
+                </div>
+              </div>
+            </div>
 {/if}
-<br style="clear:both">
-<br><br>
+
 {if $usercount_stats}
-Service user count distribution<br />
-<img src="http://chart.apis.google.com/chart?cht=p&chd=t:{foreach from=$usercount_stats key=skey item=stat name=sloop}{$stat.percentage}{if !$smarty.foreach.sloop.last},{/if}{/foreach}&chs=400x200&chl={foreach from=$usercount_stats key=skey item=stat name=sloop}{$stat.user_count}+user{if $stat.user_count > 1}s{/if}+{'('|urlencode}{$stat.percentage}{'%)'|urlencode}{if !$smarty.foreach.sloop.last}|{/if}{/foreach}&chco=6184B5,E6E6E6"/>
+            <div class="accordion-group">
+              <div class="accordion-heading">
+                <a class="accordion-toggle btn" data-toggle="collapse" data-parent="#accordion2" href="#collapseThree">
+                  # of Users
+                </a>
+              </div>
+              <div id="collapseThree" class="accordion-body collapse">
+                <div class="accordion-inner">
+                  <img src="http://chart.apis.google.com/chart?cht=p&chd=t:{foreach from=$usercount_stats key=skey item=stat name=sloop}{$stat.percentage}{if !$smarty.foreach.sloop.last},{/if}{/foreach}&chs=400x200&chl={foreach from=$usercount_stats key=skey item=stat name=sloop}{$stat.user_count}+user{if $stat.user_count > 1}s{/if}+{'('|urlencode}{$stat.percentage}{'%)'|urlencode}{if !$smarty.foreach.sloop.last}|{/if}{/foreach}&chco=3E5D9A,3C8ECC"/>
+                </div>
+              </div>
+            </div>
 {/if}
-<br><br>
+          </div>
+          
+    </div>
 
 
-<table class="gridtable">
-    <tr>
+	<div class="span12">
+	
+<table class="table-striped table-bordered table-condensed">
+    <thead>
         <th>Location</th>
-        <th>Version</th>
         <th>Last seen</th>
-        <th>Service user(s)</th>
-    </tr>
+        <th>Ver</th>
+        <th>Service</th>
+        <th>User</th>
+    </thead>
 {assign var="prev_url" value=''}
 {foreach from=$installations key=ikey item=installation name=iloop}
     {if $installation.url neq $prev_url}
-    {if  $prev_url neq ''}
-    </td></tr>
-    {/if}
-    <tr>
-        <td>{if $installation.url neq $prev_url}{$installation.url}{else}&nbsp;{/if}</td>
-        <td>{$installation.version}</td>
-        <td>{$installation.last_seen|relative_datetime} ago</td>
-        <td>{if $installation.service eq "Twitter"}<a href="http://twitter.com/{$installation.username}">@{$installation.username}</a>{else}{$installation.username} | {$installation.service}{/if}
+    <tr style="border-top : 1px solid silver;">
+        <td>{$installation.url}</td>
+        <td><h6>{$installation.last_seen|relative_datetime} ago</h6></td>
+        <td><h6>{$installation.version}</h6></td>
+        <td><h6>{$installation.service}</h6></td>
+        <td>{if $installation.service eq "Twitter"}<a href="http://twitter.com/{$installation.username}">@{$installation.username}</a>{else}{$installation.username}{/if}</td>
+    </tr>
     {else}
-        <br>{if $installation.service eq "Twitter"}<a href="http://twitter.com/{$installation.username}">@{$installation.username}</a>{else}{$installation.username} | {$installation.service}{/if}
+    <tr>
+        <td></td><td></td><td></td><td></td><td>{if $installation.service eq "Twitter"}<a href="http://twitter.com/{$installation.username}">@{$installation.username}</a>{else}{$installation.username} | {$installation.service}{/if}</td>
+    </tr>
     {/if}
     {assign var="prev_url" value=$installation.url}
 {/foreach}
-</td></tr>
 </table>
-</div>
-</center>
-</body>
+
+	</div>
+
+    </div> <!-- /container -->
+    
+<div class="footer span 12">&nbsp;</div>
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+    <script src="./assets/js/bootstrap.js"></script>
+
+  </body>
 </html>
