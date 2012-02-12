@@ -151,7 +151,7 @@ $version_stats (optional) Array of counts and percentages of installations by ve
     </div>
 
     </div> <!-- /container -->
-    
+<a href="?page={$next_page}">Next page</a>
 <div class="footer span 12">&nbsp;</div>
 
     <!-- Le javascript
