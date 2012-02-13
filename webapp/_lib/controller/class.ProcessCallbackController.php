@@ -71,7 +71,9 @@ class ProcessCallbackController extends Controller {
 
         foreach($query_string as $val) {
             $x  = explode('=', $val);
-            $arr[$x[0]] = $x[1];
+            if (isset($x[0]) && isset($x[1])) {
+                $arr[$x[0]] = $x[1];
+            }
         }
         unset($val, $x, $query_string);
         return $arr;
