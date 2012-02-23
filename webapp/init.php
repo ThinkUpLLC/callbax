@@ -31,5 +31,6 @@ if ( version_compare(PHP_VERSION, '5.2', '<') ) {
 }
 
 //Register our lazy class loader
-require_once '_lib/model/class.Loader.php';
-Loader::register();
+require_once 'extlibs/isosceles/libs/model/class.Loader.php';
+Loader::register(array('libs/model/', 'libs/controller/'));
+
