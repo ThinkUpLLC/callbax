@@ -135,7 +135,7 @@ class InstallationMySQLDAO extends PDODAO {
     }
 
     public function getHostingProviderDistribution($total_installs) {
-        $hosts = array('amazonaws', 'phpfog');
+        $hosts = array('amazonaws', 'phpfog', 'localhost');
         $hosts_total = 0;
         $stats = array();
         foreach ($hosts as $host) {
@@ -151,7 +151,7 @@ class InstallationMySQLDAO extends PDODAO {
             $hosts_total += $result['total_installs'];
         }
         $stats[] = array(
-        'host'=> "Other",
+        'host'=> "other",
         'count'=>($total_installs -$hosts_total),
         'percentage'=>round((($total_installs -$hosts_total)*100)/$total_installs));
         return $stats;

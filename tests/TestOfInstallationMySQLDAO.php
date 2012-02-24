@@ -280,4 +280,56 @@ class TestOfInstallationMySQLDAO extends CallbaxUnitTestCase {
         $this->assertEqual($result[3]['count'], '32');
         $this->assertEqual($result[3]['percentage'], '56');
     }
+
+    public function testOfGetHostingProviderDistribution() {
+        $dao = new InstallationMySQLDAO();
+        $result = $dao->getHostingProviderDistribution(10);
+        $this->assertEqual(count($result), 4); //amazon, phpfog, localhost, other
+
+        $i = 57;
+        while ($i > 0) {
+            $host_count_randomizer = $i%7;
+            switch ($host_count_randomizer) {
+                case 1:
+                    $url = 'http://ec2-46-137-242-170.ap-southeast-1.compute.amazonaws.com/ThinkUp/';
+                    break;
+                case 2:
+                    $url = 'http://cnmthinkup.phpfogapp.com/';
+                    break;
+                case 3:
+                    $url = 'http://localhost/dev/thinkup/';
+                    break;
+                default:
+                    $url = 'http://smarterware.org';
+                    break;
+            }
+            $install_builder = FixtureBuilder::build('installations', array('url'=>$url.$i,
+            'user_count'=>1, 'last_seen'=>(($i==45)?'2000-12-31 01:00:00':'-'.$i.'h')));
+            $builders[] = $install_builder;
+            $id = $install_builder->columns['last_insert_id'];
+            $user_builder = FixtureBuilder::build('users', array('installation_id'=>$id, 'service'=>'Twitter',
+            'username'=>'user'.$i));
+            $builders[] = $user_builder;
+            $i --;
+        }
+        $result = $dao->getHostingProviderDistribution(100);
+
+        $this->assertEqual(count($result), 4);
+
+        $this->assertEqual($result[0]['host'], 'amazonaws');
+        $this->assertEqual($result[0]['count'], '9');
+        $this->assertEqual($result[0]['percentage'], '9');
+
+        $this->assertEqual($result[1]['host'], 'phpfog');
+        $this->assertEqual($result[1]['count'], '8');
+        $this->assertEqual($result[1]['percentage'], '8');
+
+        $this->assertEqual($result[2]['host'], 'localhost');
+        $this->assertEqual($result[2]['count'], '8');
+        $this->assertEqual($result[2]['percentage'], '8');
+
+        $this->assertEqual($result[3]['host'], 'other');
+        $this->assertEqual($result[3]['count'], '75');
+        $this->assertEqual($result[3]['percentage'], '75');
+    }
 }
