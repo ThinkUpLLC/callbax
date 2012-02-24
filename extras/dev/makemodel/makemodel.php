@@ -34,9 +34,10 @@ chdir('webapp');
 require_once 'init.php';
 
 Loader::register(array(
-ROOT_PATH . 'extras/dev/makemodel/classes/'
-));
-
+dirname(__FILE__) . '/classes/',
+ISOSCELES_PATH .'/webapp/libs/model/',
+ISOSCELES_PATH .'/webapp/libs/controller/')
+);
 if (isset($argv) && sizeof($argv) > 2) {
     $object = new ModelMaker($argv[1], $argv[2]);
     echo $object->makeModel();

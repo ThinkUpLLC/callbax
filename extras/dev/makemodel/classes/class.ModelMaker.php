@@ -93,7 +93,7 @@ class ModelMaker {
         $view_mgr->assign('object_name', $this->object_name);
         $view_mgr->assign('parent_name', $this->parent_name);
 
-        $tpl_file = ROOT_PATH . 'extras/dev/makemodel/view/model_object.tpl';
+        $tpl_file = dirname(dirname(__FILE__)).'/view/model_object.tpl';
         //output results
         $results = $view_mgr->fetch($tpl_file);
         return $results;

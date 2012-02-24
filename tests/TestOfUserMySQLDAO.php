@@ -31,6 +31,13 @@ class TestOfUserMySQLDAO extends CallbaxUnitTestCase {
         $result = $dao->update(1, 'twitter', 'testuser');
         $this->assertEqual(1, $result);
         $user = $dao->get(1, 'twitter', 'testuser');
+        $this->assertEqual($user->follower_count, 0);
+
+        //make sure follower count gets updated
+        $result = $dao->updateFollowerCount('twitter', 'testuser', 598);
+        $this->assertEqual(1, $result);
+        $user = $dao->get(1, 'twitter', 'testuser');
+        $this->assertEqual($user->follower_count, 598);
     }
 
     public function testDeleteByInstallation() {

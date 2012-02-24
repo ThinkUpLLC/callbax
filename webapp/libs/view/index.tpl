@@ -143,6 +143,7 @@ $version_stats (optional) Array of counts and percentages of installations by ve
 <table class="table-striped table-bordered table-condensed">
     <thead>
         <th>User</th>
+        <th># Followers</th>
         <th>Installation</th>
         <th>Last seen</th>
         <th>Ver</th>
@@ -151,6 +152,7 @@ $version_stats (optional) Array of counts and percentages of installations by ve
 {foreach from=$installations key=ikey item=installation name=iloop}
     <tr style="border-top : 1px solid silver;">
         <td>{if $installation.service eq "Twitter"}<a href="https://twitter.com/intent/user?screen_name={$installation.username}">@{$installation.username}</a>{else}{$installation.username}{/if} - {$installation.service}</td>
+        <td>{$installation.follower_count|number_format}</td>
         <td>{$installation.url}</td>
         <td><h6>{$installation.last_seen|relative_datetime} ago</h6></td>
         <td><h6>{$installation.version}</h6></td>

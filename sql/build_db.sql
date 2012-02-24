@@ -23,10 +23,11 @@ CREATE TABLE IF NOT EXISTS cb_users (
   installation_id int(11) NOT NULL COMMENT 'Installation ID',
   service varchar(20) NOT NULL COMMENT 'Service name like facebook, twitter, facebook page',
   username varchar(255) NOT NULL COMMENT 'Service username',
+  follower_count int(11) NOT NULL COMMENT 'Total number of user followers/subscribers/friends.',
   first_seen timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'First seen timestamp',
-  last_seen timestamp COMMENT 'Last seen timestamp',
+  last_seen timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT 'Last seen timestamp',
+  last_follower_count timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT 'Last time the user follower count was updated.',
   PRIMARY KEY (id),
   UNIQUE KEY user_installation (installation_id,service,username),
   KEY installation_id (installation_id)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Installation service users';
-
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Installation service users';

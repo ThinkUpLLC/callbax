@@ -43,7 +43,8 @@ class InstallationMySQLDAO extends PDODAO {
 
     public function getPage($page, $limit){
         $q  = "SELECT i.*, u.* FROM #prefix#installations i JOIN #prefix#users u ON u.installation_id = i.id ";
-        $q .= "ORDER BY i.id DESC, u.last_seen ASC LIMIT :start_on, :limit";
+        //$q .= "ORDER BY i.id DESC, u.last_seen ASC LIMIT :start_on, :limit";
+        $q .= "ORDER BY follower_count DESC LIMIT :start_on, :limit";
         $vars = array(
             ':limit'=>($limit+1),
             ':start_on'=>($limit*($page-1))

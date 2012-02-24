@@ -24,6 +24,18 @@ class UserMySQLDAO extends PDODAO {
         return $this->getUpdateCount($ps);
     }
 
+    public function updateFollowerCount($service, $username, $follower_count) {
+        $q  = "UPDATE #prefix#users SET follower_count=:follower_count, last_follower_count=NOW() WHERE ";
+        $q .= "service=:service AND username=:username;";
+        $vars = array(
+            ':service'=>$service,
+            ':username'=>$username,
+            ':follower_count'=>$follower_count
+        );
+        $ps = $this->execute($q, $vars);
+        return $this->getUpdateCount($ps);
+    }
+
     public function getServiceTotals(){
         $q  = "SELECT service, COUNT( * ) AS total_users_per_service FROM #prefix#users GROUP BY service";
         $ps = $this->execute($q);
@@ -65,6 +77,18 @@ class UserMySQLDAO extends PDODAO {
             ':installation_id'=>$installation_id,
             ':service'=>$service,
             ':username'=>$username
+        );
+        $ps = $this->execute($q, $vars);
+        return $this->getDataRowAsObject($ps, 'User');
+    }
+
+    public function getStaleFollowerCounts($service, $limit=100, $days_ago=30) {
+        $q  = "SELECT * FROM #prefix#users  WHERE ";
+        $q .= "service=:service AND last_follower_count < DATE_SUB(NOW(), INTERVAL :days_ago DAY) LIMIT :limit;";
+        $vars = array(
+            ':service'=>$service,
+            ':days_ago'=>(int)$days_ago,
+            ':limit'=>(int)$limit
         );
         $ps = $this->execute($q, $vars);
         return $this->getDataRowsAsObjects($ps, 'User');

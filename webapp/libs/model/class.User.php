@@ -1,5 +1,4 @@
 <?php
-
 class User {
     /**
      * @var int Internal unique ID
@@ -18,21 +17,31 @@ class User {
      */
     var $username;
     /**
-     * @var str Last seen timestamp
+     * @var int Total number of user followers/subscribers/friends.
      */
-    var $last_seen;
+    var $follower_count;
     /**
      * @var str First seen timestamp
      */
     var $first_seen;
+    /**
+     * @var str Last seen timestamp
+     */
+    var $last_seen;
+    /**
+     * @var str Last time the user follower count was updated.
+     */
+    var $last_follower_count;
     public function __construct($row = false) {
         if ($row) {
             $this->id = $row['id'];
             $this->installation_id = $row['installation_id'];
             $this->service = $row['service'];
             $this->username = $row['username'];
-            $this->last_seen = $row['last_seen'];
+            $this->follower_count = $row['follower_count'];
             $this->first_seen = $row['first_seen'];
+            $this->last_seen = $row['last_seen'];
+            $this->last_follower_count = $row['last_follower_count'];
         }
     }
 }
