@@ -150,7 +150,7 @@ $version_stats (optional) Array of counts and percentages of installations by ve
     
 {foreach from=$installations key=ikey item=installation name=iloop}
     <tr style="border-top : 1px solid silver;">
-        <td>{if $installation.service eq "Twitter"}<a href="http://twitter.com/{$installation.username}">@{$installation.username}</a>{else}{$installation.username}{/if} - {$installation.service}</td>
+        <td>{if $installation.service eq "Twitter"}<a href="https://twitter.com/intent/user?screen_name={$installation.username}">@{$installation.username}</a>{else}{$installation.username}{/if} - {$installation.service}</td>
         <td>{$installation.url}</td>
         <td><h6>{$installation.last_seen|relative_datetime} ago</h6></td>
         <td><h6>{$installation.version}</h6></td>
@@ -170,5 +170,6 @@ $version_stats (optional) Array of counts and percentages of installations by ve
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
     <script src="./assets/js/bootstrap.js"></script>
 
+    <script type="text/javascript" src="//platform.twitter.com/widgets.js"></script>
   </body>
 </html>
