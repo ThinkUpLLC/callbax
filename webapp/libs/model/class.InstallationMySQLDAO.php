@@ -1,11 +1,13 @@
 <?php
 class InstallationMySQLDAO extends PDODAO {
 
-    public function insert($url, $version) {
-        $q  = "INSERT IGNORE INTO #prefix#installations  (url, version) VALUES ( :url, :version) ";
+    public function insert($url, $version, $is_opted_out = false) {
+        $q  = "INSERT IGNORE INTO #prefix#installations  ";
+        $q .= "(url, version, is_opted_out) VALUES ( :url, :version, :is_opted_out) ";
         $vars = array(
             ':url'=>$url,
-            ':version'=>$version
+            ':version'=>$version,
+            ':is_opted_out'=>$is_opted_out
         );
         $ps = $this->execute($q, $vars);
         return $this->getInsertId($ps);
@@ -20,11 +22,13 @@ class InstallationMySQLDAO extends PDODAO {
         return $this->getDataRowsAsObjects($ps, 'Installation');
     }
 
-    public function update($url, $version){
-        $q  = "UPDATE #prefix#installations SET version=:version, last_seen=NOW() WHERE url=:url";
+    public function update($url, $version, $is_opted_out){
+        $q  = "UPDATE #prefix#installations ";
+        $q .= "SET version=:version, is_opted_out=:is_opted_out, last_seen=NOW() WHERE url=:url";
         $vars = array(
             ':url'=>$url,
-            ':version'=>$version
+            ':version'=>$version,
+            ':is_opted_out'=>self::convertBoolToDB($is_opted_out)
         );
         $ps = $this->execute($q, $vars);
         return $this->getUpdateCount($ps);
@@ -122,9 +126,11 @@ class InstallationMySQLDAO extends PDODAO {
                 $more_than_threshold_total += $result['total_installs_with_user_count'];
             }
         }
-        $stats[] = array('user_count'=> $upper_threshold.'+',
-        'count'=>$more_than_threshold_total,
-        'percentage'=>round(($more_than_threshold_total*100)/$total_installs));
+        if ($total_installs > 0){
+            $stats[] = array('user_count'=> $upper_threshold.'+',
+            'count'=>$more_than_threshold_total,
+            'percentage'=>round(($more_than_threshold_total*100)/$total_installs));
+        }
         return $stats;
     }
 
@@ -149,5 +155,12 @@ class InstallationMySQLDAO extends PDODAO {
         'count'=>($total_installs -$hosts_total),
         'percentage'=>round((($total_installs -$hosts_total)*100)/$total_installs));
         return $stats;
+    }
+
+    public function getTotalOptOuts(){
+        $q  = "SELECT COUNT(*) AS total FROM #prefix#installations WHERE is_opted_out=1;";
+        $ps = $this->execute($q);
+        $result = $this->getDataRowAsArray($ps);
+        return $result['total'];
     }
 }

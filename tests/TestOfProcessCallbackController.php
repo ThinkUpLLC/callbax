@@ -1,6 +1,5 @@
 <?php
 require_once dirname(__FILE__).'/init.tests.php';
-require_once ROOT_PATH.'webapp/config.inc.php';
 require_once ROOT_PATH.'webapp/extlibs/simpletest/autorun.php';
 
 class TestOfProcessCallbackController extends CallbaxUnitTestCase {
@@ -89,5 +88,42 @@ class TestOfProcessCallbackController extends CallbaxUnitTestCase {
         $ps = CallbackMySQLDAO::$PDO->query("SELECT count(*) AS total FROM cb_callbacks;");
         $data = $ps->fetchAll();
         $this->assertEqual($data[0]['total'], 0);
+
+        //test usage tracking opt out
+        $builders[] = FixtureBuilder::build('callbacks', array('id'=>11,
+        'referrer'=>'http://smarterware.org/thinkup/index.php?u=Gina+Trapani&n=facebook+page&usage=n',
+        'version'=>'0.15', 'last_seen'=>'-1h', 'is_opted_out'=>'1'));
+
+        $results = $controller->control();
+        $this->assertEqual($results, '');
+
+        $ps = CallbackMySQLDAO::$PDO->query("SELECT COUNT(*) AS total FROM cb_installations;");
+        $data = $ps->fetchAll();
+        $this->assertEqual($data[0]['total'], 4);
+
+        //installations should have is_opted_out value set correctly
+        $ps = CallbackMySQLDAO::$PDO->query("SELECT * FROM cb_installations;");
+        $data = $ps->fetchAll();
+        $this->assertEqual($data[0]['url'], 'http://dev.thinkup.com/');
+        $this->assertEqual($data[0]['is_opted_out'], 0);
+        $this->assertEqual($data[1]['url'], 'http://expertlabs.aaas.org/thinkup01/');
+        $this->assertEqual($data[1]['is_opted_out'], 0);
+        $this->assertEqual($data[2]['url'], 'http://smarterware.org/thinkup/');
+        $this->assertEqual($data[2]['is_opted_out'], 1);
+        $this->assertEqual($data[3]['url'], 'http://timomcd.com/thinkup/');
+        $this->assertEqual($data[3]['is_opted_out'], 0);
+
+        //smarterware.org users shouldn't exist
+        $ps = CallbackMySQLDAO::$PDO->query("SELECT * FROM cb_users;");
+        $data = $ps->fetchAll();
+        $this->assertEqual($data[0]['service'], 'Google+');
+        $this->assertEqual($data[0]['username'], 'Gina Trapani');
+        $this->assertEqual($data[0]['installation_id'], 1);
+        $this->assertEqual($data[1]['service'], 'Twitter');
+        $this->assertEqual($data[1]['username'], 'ginatrapani');
+        $this->assertEqual($data[1]['installation_id'], 1);
+        $this->assertEqual($data[2]['service'], 'Facebook Page');
+        $this->assertEqual($data[2]['username'], 'The White House');
+        $this->assertEqual($data[2]['installation_id'], 2);
     }
 }

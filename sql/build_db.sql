@@ -3,6 +3,7 @@ CREATE TABLE IF NOT EXISTS cb_callbacks (
   referrer varchar(255) NOT NULL COMMENT 'Full raw path of the referring installation',
   version varchar(10) NOT NULL COMMENT 'Version number installation queried about',
   last_seen timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Last seen timestamp',
+  is_opted_out tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Whether or not the installation has opted out of usage tracking (1 if so, 0 if not.)',
   PRIMARY KEY (id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Raw callbacks.';
 
@@ -12,6 +13,7 @@ CREATE TABLE IF NOT EXISTS cb_installations (
   version varchar(10) NOT NULL COMMENT 'Version installation is running',
   user_count int(11) NOT NULL COMMENT 'Total service users detected on this installation.',
   last_seen timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Last seen timestamp',
+  is_opted_out tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Whether or not the installation has opted out of usage tracking (1 if so, 0 if not.)',
   PRIMARY KEY (id),
   UNIQUE KEY url (url)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Installations';

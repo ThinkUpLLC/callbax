@@ -89,7 +89,7 @@ class CallbaxBasicUnitTestCase extends UnitTestCase {
      * Prevents unnecessary/inexplicable failures and data loss.
      */
     public static function isTestEnvironmentReady() {
-        require WEBAPP_PATH.'config.inc.php';
+        require WEBAPP_PATH.'extlibs/isosceles/libs/config.inc.php';
 
         $datadir_path = FileDataManager::getDataPath();
         if (!is_writable($datadir_path)) {
@@ -98,15 +98,16 @@ class CallbaxBasicUnitTestCase extends UnitTestCase {
 
         global $TEST_DATABASE;
 
-        if ($CALLBAX_CFG['db_name'] != $TEST_DATABASE) {
-            $message = "The database name in webapp/config.inc.php does not match \$TEST_DATABASE in ".
+        if ($ISOSCELES_CFG['db_name'] != $TEST_DATABASE) {
+            $message = "The database name in ".WEBAPP_PATH.
+            "extlibs/isosceles/libs/config.inc.php does not match \$TEST_DATABASE in ".
             "tests/config.tests.inc.php.
 In order to test your Callbax installation without losing data, these database names must both point to the same ".
 "empty test database.";
         }
 
-        if ($CALLBAX_CFG['cache_pages']) {
-            $message = "In order to test your Callbax installation, \$CALLBAX_CFG['cache_pages'] must be set to false.";
+        if ($ISOSCELES_CFG['cache_pages']) {
+            $message = "In order to test your Callbax installation, \$ISOSCELES['cache_pages'] must be set to false.";
         }
 
         if (isset($message)) {

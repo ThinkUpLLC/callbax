@@ -36,14 +36,22 @@ class ProcessCallbackController extends Controller {
                         $url = $parsed_referer['scheme'].'://'.$host.$path;
                         $installation = $installation_dao->get($url);
                         if (count($installation) == 0) { //doesn't exist, insert it
-                            $installation_id = $installation_dao->insert($url, $callback->version);
+                            $installation_id = $installation_dao->insert($url, $callback->version,
+                            $callback->is_opted_out);
                         } else { //update existing record's last_seen and version
-                            $installation_id = $installation_dao->update($url, $callback->version);
+                            $installation_id = $installation_dao->update($url, $callback->version,
+                            $callback->is_opted_out);
                             $installation_id = $installation[0]->id;
                         }
 
-                        $user_dao->insert($installation_id, $service, $username);
-                        $installation_ids_to_update[] = $installation_id;
+                        if (!$callback->is_opted_out) {
+                            //opted into usage tracking, add users
+                            $user_dao->insert($installation_id, $service, $username);
+                            $installation_ids_to_update[] = $installation_id;
+                        } else {
+                            //opted out of usage tracking, remove users
+                            $user_dao->deleteByInstallation($installation_id);
+                        }
                     }
                 }
                 //update user counts for each installation

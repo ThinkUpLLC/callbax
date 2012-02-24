@@ -20,6 +20,11 @@ class Installation {
      * @var str Last seen timestamp
      */
     var $last_seen;
+    /**
+     * @var bool Whether or not the installation has opted out of usage tracking
+     */
+    var $is_opted_out;
+
     public function __construct($row = false) {
         if ($row) {
             $this->id = $row['id'];
@@ -27,6 +32,7 @@ class Installation {
             $this->user_count = $row['user_count'];
             $this->version = $row['version'];
             $this->last_seen = $row['last_seen'];
+            $this->is_opted_out = PDODAO::convertDBToBool($row['is_opted_out']);
         }
     }
 }

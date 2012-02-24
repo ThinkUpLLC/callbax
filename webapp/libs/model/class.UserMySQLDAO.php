@@ -35,4 +35,14 @@ class UserMySQLDAO extends PDODAO {
         $result = $this->getDataRowAsArray($ps);
         return $result['total'];
     }
+
+    public function deleteByInstallation($installation_id) {
+        $q  = "DELETE FROM #prefix#users ";
+        $q .= "WHERE installation_id=:installation_id;";
+        $vars = array(
+            ':installation_id'=>$installation_id,
+        );
+        $ps = $this->execute($q, $vars);
+        return $this->getUpdateCount($ps);
+    }
 }

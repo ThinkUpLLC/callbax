@@ -1,10 +1,8 @@
 <?php
 require_once dirname(__FILE__).'/init.tests.php';
-require_once ROOT_PATH.'webapp/config.inc.php';
 require_once ROOT_PATH.'webapp/extlibs/simpletest/autorun.php';
 
 class TestOfCallbackMySQLDAO extends CallbaxUnitTestCase {
-
     public function setUp() {
         parent::setUp();
     }
@@ -26,7 +24,7 @@ class TestOfCallbackMySQLDAO extends CallbaxUnitTestCase {
         $result = $dao->insert('my referrer 2', '0.14');
         $this->assertEqual(2, $result);
 
-        $result = $dao->insert('my referrer 3', '0.14');
+        $result = $dao->insert('my referrer 3', '0.14', true);
         $this->assertEqual(3, $result);
     }
 
@@ -38,7 +36,6 @@ class TestOfCallbackMySQLDAO extends CallbaxUnitTestCase {
         $result = $dao->delete(1);
         $this->assertEqual(1, $result);
     }
-
 
     public function testGet() {
         $dao = new CallbackMySQLDAO();

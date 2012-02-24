@@ -18,18 +18,17 @@ class CallbaxUnitTestCase extends CallbaxBasicUnitTestCase {
      */
     public function setUp() {
         parent::setUp();
-        require WEBAPP_PATH.'config.inc.php';
         require ROOT_PATH .'tests/config.tests.inc.php';
         $this->test_database_name = $TEST_DATABASE;
-
         //Override default CFG values
-        $CALLBAX_CFG['db_name'] = $this->test_database_name;
+        $ISOSCELES_CFG['db_name'] = $this->test_database_name;
+
         $config = Config::getInstance();
         $config->setValue('db_name', $this->test_database_name);
 
         $this->testdb_helper = new CallbaxTestDatabaseHelper();
         $this->testdb_helper->drop($this->test_database_name);
-        $this->testdb_helper->create($CALLBAX_CFG['source_root_path']."sql/build_db.sql");
+        $this->testdb_helper->create($ISOSCELES_CFG['source_root_path']."sql/build_db.sql");
 
         $this->table_prefix = $config->getValue('table_prefix');
     }

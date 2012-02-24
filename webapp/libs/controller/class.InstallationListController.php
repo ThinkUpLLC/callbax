@@ -19,7 +19,7 @@ class InstallationListController extends Controller {
 
         $this->addToView('total_installations', $total_installations);
         $this->addToView('total_users', $total_users);
-
+        $this->addToView('total_optouts', $installation_dao->getTotalOptOuts());
         $this->addToView('first_seen_installation_date', $installation_dao->getFirstSeenInstallationDate());
 
         $this->addToView('service_stats', $user_dao->getServiceTotals());

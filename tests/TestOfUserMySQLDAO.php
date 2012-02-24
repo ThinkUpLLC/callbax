@@ -1,6 +1,5 @@
 <?php
 require_once dirname(__FILE__).'/init.tests.php';
-require_once ROOT_PATH.'webapp/config.inc.php';
 require_once ROOT_PATH.'webapp/extlibs/simpletest/autorun.php';
 
 class TestOfUserMySQLDAO extends CallbaxUnitTestCase {
@@ -21,15 +20,33 @@ class TestOfUserMySQLDAO extends CallbaxUnitTestCase {
     public function testInsert() {
         $dao = new UserMySQLDAO();
         //$install_id, $service, $username
-        $result = $dao->insert('http://example.com', 'testuser', 'twitter');
+        $result = $dao->insert(1, 'testuser', 'twitter');
         $this->assertEqual(1, $result);
 
-        $result = $dao->insert('http://example2.com/', 'testuser2', 'facebook');
+        $result = $dao->insert(2, 'testuser2', 'facebook');
         $this->assertEqual(2, $result);
 
         //same-same, no new insert
-        $result = $dao->insert('http://example.com', 'testuser2', 'facebook');
+        $result = $dao->insert(1, 'testuser', 'twitter');
         $this->assertFalse($result);
+    }
+
+    public function testDeleteByInstallation() {
+        $dao = new UserMySQLDAO();
+        //$install_id, $service, $username
+        $result = $dao->insert(1, 'testuser', 'twitter');
+        $result = $dao->insert(2, 'testuser2', 'facebook');
+        $result = $dao->insert(1, 'testuser3', 'facebook');
+
+        $ps = CallbackMySQLDAO::$PDO->query("SELECT * FROM cb_users;");
+        $data = $ps->fetchAll();
+        $this->assertEqual(3, sizeof($data));
+
+        $dao->deleteByInstallation(1);
+
+        $ps = CallbackMySQLDAO::$PDO->query("SELECT * FROM cb_users;");
+        $data = $ps->fetchAll();
+        $this->assertEqual(1, sizeof($data));
     }
 
     public function testOfGetServiceTotals() {

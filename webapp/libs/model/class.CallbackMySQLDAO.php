@@ -1,12 +1,14 @@
 <?php
 class CallbackMySQLDAO extends PDODAO {
-    public function insert($referrer, $version) {
+    public function insert($referrer, $version, $is_opted_out = false) {
+        $is_opted_out = self::convertBoolToDB($is_opted_out);
         $q  = "INSERT INTO #prefix#callbacks ";
-        $q .= "(referrer, version) ";
-        $q .= "VALUES ( :referrer, :version ) ";
+        $q .= "(referrer, version, is_opted_out) ";
+        $q .= "VALUES ( :referrer, :version, :is_opted_out ) ";
         $vars = array(
             ':referrer'=>$referrer,
-            ':version'=>$version
+            ':version'=>$version,
+            ':is_opted_out'=>$is_opted_out
         );
         $ps = $this->execute($q, $vars);
         return $this->getInsertId($ps);

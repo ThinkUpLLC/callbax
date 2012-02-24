@@ -68,6 +68,7 @@ $version_stats (optional) Array of counts and percentages of installations by ve
         <h4>installations<h4>
         <h1>{$first_seen_installation_date|relative_datetime}</h1>
         <h4>of tracking</h4>
+        <small><br>{$total_optouts|number_format} disabled usage tracking</small>
     </div>
 
     <div class="span5 offset1">

@@ -1,6 +1,5 @@
 <?php
 require_once dirname(__FILE__).'/init.tests.php';
-require_once ROOT_PATH.'webapp/config.inc.php';
 require_once ROOT_PATH.'webapp/extlibs/simpletest/autorun.php';
 
 class TestOfInstallationMySQLDAO extends CallbaxUnitTestCase {
@@ -23,7 +22,7 @@ class TestOfInstallationMySQLDAO extends CallbaxUnitTestCase {
         $result = $dao->insert('http://example.com', '0.14');
         $this->assertEqual(1, $result);
 
-        $result = $dao->insert('http://example2.com/', '0.14');
+        $result = $dao->insert('http://example2.com/', '0.14', true);
         $this->assertEqual(2, $result);
 
         $result = $dao->insert('http://example.com', '0.14');
@@ -55,11 +54,12 @@ class TestOfInstallationMySQLDAO extends CallbaxUnitTestCase {
         $this->assertEqual($results[0]->url, 'http://example.com');
         $this->assertEqual($results[0]->version, '0.11');
 
-        $results = $dao->update('http://example.com', '0.14');
+        $results = $dao->update('http://example.com', '0.14', true);
         $this->assertEqual(count($results), 1);
         $results = $dao->get('http://example.com');
         $this->assertEqual($results[0]->url, 'http://example.com');
         $this->assertEqual($results[0]->version, '0.14');
+        $this->assertEqual($results[0]->is_opted_out, true);
     }
 
     public function testGetPage() {
@@ -262,7 +262,7 @@ class TestOfInstallationMySQLDAO extends CallbaxUnitTestCase {
         }
         $result = $dao->getUserCountDistribution();
 
-        $this->assertEqual(count($result), 4);
+        $this->assertEqual(count($result), 5);
 
         $this->assertEqual($result[0]['user_count'], 1);
         $this->assertEqual($result[0]['count'], '9');
