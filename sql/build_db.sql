@@ -23,7 +23,10 @@ CREATE TABLE IF NOT EXISTS cb_users (
   installation_id int(11) NOT NULL COMMENT 'Installation ID',
   service varchar(20) NOT NULL COMMENT 'Service name like facebook, twitter, facebook page',
   username varchar(255) NOT NULL COMMENT 'Service username',
+  first_seen timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'First seen timestamp',
+  last_seen timestamp COMMENT 'Last seen timestamp',
   PRIMARY KEY (id),
   UNIQUE KEY user_installation (installation_id,service,username),
   KEY installation_id (installation_id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Installation service users';
+

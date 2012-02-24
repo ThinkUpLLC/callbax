@@ -46,7 +46,12 @@ class ProcessCallbackController extends Controller {
 
                         if (!$callback->is_opted_out) {
                             //opted into usage tracking, add users
-                            $user_dao->insert($installation_id, $service, $username);
+                            $user = $user_dao->get($installation_id, $service, $username);
+                            if (count($user) == 0) { //doesn't exist, insert it
+                                $user_dao->insert($installation_id, $service, $username);
+                            } else {
+                                $user_dao->update($installation_id, $service, $username);
+                            }
                             $installation_ids_to_update[] = $installation_id;
                         } else {
                             //opted out of usage tracking, remove users

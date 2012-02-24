@@ -1,8 +1,8 @@
 <?php
 class UserMySQLDAO extends PDODAO {
     public function insert($installation_id, $service, $username) {
-        $q  = "INSERT IGNORE INTO #prefix#users (installation_id, service, username) ";
-        $q .= "VALUES ( :installation_id, :service, :username ) ";
+        $q  = "INSERT INTO #prefix#users (installation_id, service, username, first_seen, last_seen) ";
+        $q .= "VALUES ( :installation_id, :service, :username, NOW(), NOW() ) ";
         $vars = array(
             ':installation_id'=>$installation_id,
             ':service'=>$service,
@@ -10,6 +10,18 @@ class UserMySQLDAO extends PDODAO {
         );
         $ps = $this->execute($q, $vars);
         return $this->getInsertId($ps);
+    }
+
+    public function update($installation_id, $service, $username) {
+        $q  = "UPDATE #prefix#users SET last_seen=NOW() WHERE ";
+        $q .= "installation_id=:installation_id AND service=:service AND username=:username;";
+        $vars = array(
+            ':installation_id'=>$installation_id,
+            ':service'=>$service,
+            ':username'=>$username
+        );
+        $ps = $this->execute($q, $vars);
+        return $this->getUpdateCount($ps);
     }
 
     public function getServiceTotals(){
@@ -44,5 +56,17 @@ class UserMySQLDAO extends PDODAO {
         );
         $ps = $this->execute($q, $vars);
         return $this->getUpdateCount($ps);
+    }
+
+    public function get($installation_id, $service, $username) {
+        $q  = "SELECT * FROM #prefix#users  WHERE ";
+        $q .= "installation_id=:installation_id AND service=:service AND username=:username;";
+        $vars = array(
+            ':installation_id'=>$installation_id,
+            ':service'=>$service,
+            ':username'=>$username
+        );
+        $ps = $this->execute($q, $vars);
+        return $this->getDataRowsAsObjects($ps, 'User');
     }
 }

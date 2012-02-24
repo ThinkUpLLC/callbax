@@ -138,33 +138,23 @@ $version_stats (optional) Array of counts and percentages of installations by ve
           
     </div>
 
-
     <div class="span12">
     
 <table class="table-striped table-bordered table-condensed">
     <thead>
-        <th>Location</th>
+        <th>User</th>
+        <th>Installation</th>
         <th>Last seen</th>
         <th>Ver</th>
-        <th>Service</th>
-        <th>User</th>
     </thead>
-{assign var="prev_url" value=''}
+    
 {foreach from=$installations key=ikey item=installation name=iloop}
-    {if $installation.url neq $prev_url}
     <tr style="border-top : 1px solid silver;">
+        <td>{if $installation.service eq "Twitter"}<a href="http://twitter.com/{$installation.username}">@{$installation.username}</a>{else}{$installation.username}{/if} - {$installation.service}</td>
         <td>{$installation.url}</td>
         <td><h6>{$installation.last_seen|relative_datetime} ago</h6></td>
         <td><h6>{$installation.version}</h6></td>
-        <td><h6>{$installation.service}</h6></td>
-        <td>{if $installation.service eq "Twitter"}<a href="http://twitter.com/{$installation.username}">@{$installation.username}</a>{else}{$installation.username}{/if}</td>
     </tr>
-    {else}
-    <tr>
-        <td></td><td></td><td></td><td></td><td>{if $installation.service eq "Twitter"}<a href="http://twitter.com/{$installation.username}">@{$installation.username}</a>{else}{$installation.username} | {$installation.service}{/if}</td>
-    </tr>
-    {/if}
-    {assign var="prev_url" value=$installation.url}
 {/foreach}
 </table>
 

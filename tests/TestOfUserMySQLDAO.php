@@ -17,18 +17,20 @@ class TestOfUserMySQLDAO extends CallbaxUnitTestCase {
         $this->assertNotNull($dao);
     }
 
-    public function testInsert() {
+    public function testInsertGetUpdate() {
         $dao = new UserMySQLDAO();
         //$install_id, $service, $username
-        $result = $dao->insert(1, 'testuser', 'twitter');
+        $result = $dao->insert(1, 'twitter', 'testuser');
         $this->assertEqual(1, $result);
 
-        $result = $dao->insert(2, 'testuser2', 'facebook');
+        $result = $dao->insert(2, 'facebook', 'testuser2');
         $this->assertEqual(2, $result);
 
-        //same-same, no new insert
-        $result = $dao->insert(1, 'testuser', 'twitter');
-        $this->assertFalse($result);
+        sleep(1); //make sure last_seen data gets changed
+        //update
+        $result = $dao->update(1, 'twitter', 'testuser');
+        $this->assertEqual(1, $result);
+        $user = $dao->get(1, 'twitter', 'testuser');
     }
 
     public function testDeleteByInstallation() {
