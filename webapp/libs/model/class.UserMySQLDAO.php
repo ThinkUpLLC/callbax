@@ -28,4 +28,11 @@ class UserMySQLDAO extends PDODAO {
         }
         return $stats;
     }
+
+    public function getTotal($days=null){
+        $q  = "SELECT COUNT(*) AS total FROM #prefix#users";
+        $ps = $this->execute($q);
+        $result = $this->getDataRowAsArray($ps);
+        return $result['total'];
+    }
 }

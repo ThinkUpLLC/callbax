@@ -61,10 +61,12 @@ $version_stats (optional) Array of counts and percentages of installations by ve
     <div class="container">
 
     <div class="span2 offset1 alert alert-error">
-        <h1>{$total_installations} admins<h1>
-        <h4>used ThinkUp in the last<h4>
+        <h1>{$total_users|number_format} <h1>
+        <h4>service users<h4>
+        <h1>{$total_installations|number_format} <h1>
+        <h4>admins<h4>
         <h1>{$first_seen_installation_date|relative_datetime}</h1>
-                
+        <h4>of tracking</h4>
     </div>
 
     <div class="span5 offset1">
@@ -109,11 +111,27 @@ $version_stats (optional) Array of counts and percentages of installations by ve
               </div>
               <div id="collapseThree" class="accordion-body collapse">
                 <div class="accordion-inner">
-                  <img src="http://chart.apis.google.com/chart?cht=p&chd=t:{foreach from=$usercount_stats key=skey item=stat name=sloop}{$stat.percentage}{if !$smarty.foreach.sloop.last},{/if}{/foreach}&chs=400x200&chl={foreach from=$usercount_stats key=skey item=stat name=sloop}{$stat.user_count}+user{if $stat.user_count > 1}s{/if}+{'('|urlencode}{$stat.percentage}{'%)'|urlencode}{if !$smarty.foreach.sloop.last}|{/if}{/foreach}&chco=3E5D9A,3C8ECC"/>
+                  <img src="http://chart.apis.google.com/chart?cht=p&chd=t:{foreach from=$usercount_stats key=skey item=stat name=sloop}{$stat.percentage}{if !$smarty.foreach.sloop.last},{/if}{/foreach}&chs=400x200&chl={foreach from=$usercount_stats key=skey item=stat name=sloop}{$stat.user_count|urlencode}+user{if $stat.user_count > 1}s{/if}+{'('|urlencode}{$stat.percentage}{'%)'|urlencode}{if !$smarty.foreach.sloop.last}|{/if}{/foreach}&chco=3E5D9A,3C8ECC"/>
                 </div>
               </div>
             </div>
 {/if}
+
+{if $host_stats}
+            <div class="accordion-group">
+              <div class="accordion-heading">
+                <a class="accordion-toggle btn" data-toggle="collapse" data-parent="#accordion2" href="#collapseFour">
+                  By host
+                </a>
+              </div>
+              <div id="collapseFour" class="accordion-body collapse">
+                <div class="accordion-inner">
+                  <img src="http://chart.apis.google.com/chart?cht=p&chd=t:{foreach from=$host_stats key=skey item=stat name=sloop}{$stat.percentage}{if !$smarty.foreach.sloop.last},{/if}{/foreach}&chs=400x200&chl={foreach from=$host_stats key=skey item=stat name=sloop}{$stat.host|urlencode}+{'('|urlencode}{$stat.percentage}{'%)'|urlencode}{if !$smarty.foreach.sloop.last}|{/if}{/foreach}&chco=3E5D9A,3C8ECC"/>
+                </div>
+              </div>
+            </div>
+{/if}
+
           </div>
           
     </div>

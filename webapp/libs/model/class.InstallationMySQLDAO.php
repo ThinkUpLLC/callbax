@@ -100,6 +100,7 @@ class InstallationMySQLDAO extends PDODAO {
     }
 
     public function getUserCountDistribution() {
+        $upper_threshold = 7;
         $q  = "SELECT user_count, COUNT( * ) AS total_installs_with_user_count FROM #prefix#installations ";
         $q .= "GROUP BY user_count";
         $ps = $this->execute($q);
@@ -110,10 +111,43 @@ class InstallationMySQLDAO extends PDODAO {
             $total_installs = $total_installs + $result['total_installs_with_user_count'];
         }
         $stats = array();
+        $more_than_threshold_total = 0;
         foreach ($results as $result) {
-            $stats[] = array('user_count'=> $result['user_count'], 'count'=>$result['total_installs_with_user_count'],
-            'percentage'=>round(($result['total_installs_with_user_count']*100)/$total_installs));
+            if ($result['user_count'] < $upper_threshold) {
+                $stats[] = array(
+                'user_count'=> $result['user_count'],
+                'count'=>$result['total_installs_with_user_count'],
+                'percentage'=>round(($result['total_installs_with_user_count']*100)/$total_installs));
+            } else {
+                $more_than_threshold_total += $result['total_installs_with_user_count'];
+            }
         }
+        $stats[] = array('user_count'=> $upper_threshold.'+',
+        'count'=>$more_than_threshold_total,
+        'percentage'=>round(($more_than_threshold_total*100)/$total_installs));
+        return $stats;
+    }
+
+    public function getHostingProviderDistribution($total_installs) {
+        $hosts = array('amazonaws', 'phpfog');
+        $hosts_total = 0;
+        $stats = array();
+        foreach ($hosts as $host) {
+            $q = "SELECT count(*) AS total_installs FROM #prefix#installations WHERE url like '%".$host."%'";
+            $ps = $this->execute($q);
+            $results = $this->getDataRowsAsArrays($ps);
+            foreach ($results as $result) {
+                $stats[] = array(
+                'host'=> $host,
+                'count'=>$result['total_installs'],
+                'percentage'=>round(($result['total_installs']*100)/$total_installs));
+            }
+            $hosts_total += $result['total_installs'];
+        }
+        $stats[] = array(
+        'host'=> "Other",
+        'count'=>($total_installs -$hosts_total),
+        'percentage'=>round((($total_installs -$hosts_total)*100)/$total_installs));
         return $stats;
     }
 }
