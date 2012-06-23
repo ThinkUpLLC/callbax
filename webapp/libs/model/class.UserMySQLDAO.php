@@ -36,6 +36,17 @@ class UserMySQLDAO extends PDODAO {
         return $this->getUpdateCount($ps);
     }
 
+    public function updateLastFollowerCount($service, $username) {
+        $q  = "UPDATE #prefix#users SET last_follower_count=NOW() WHERE ";
+        $q .= "service=:service AND username=:username;";
+        $vars = array(
+            ':service'=>$service,
+            ':username'=>$username
+        );
+        $ps = $this->execute($q, $vars);
+        return $this->getUpdateCount($ps);
+    }
+
     public function getServiceTotals(){
         $q  = "SELECT service, COUNT( * ) AS total_users_per_service FROM #prefix#users GROUP BY service";
         $ps = $this->execute($q);
@@ -47,8 +58,11 @@ class UserMySQLDAO extends PDODAO {
         }
         $stats = array();
         foreach ($results as $result) {
-            $stats[] = array('service'=> $result['service'], 'count'=>$result['total_users_per_service'],
-            'percentage'=>round(($result['total_users_per_service']*100)/$total_users));
+            $service_percentage = round(($result['total_users_per_service']*100)/$total_users);
+            if ($service_percentage > 0) {
+                $stats[] = array('service'=> $result['service'], 'count'=>$result['total_users_per_service'],
+                'percentage'=>$service_percentage);
+            }
         }
         return $stats;
     }

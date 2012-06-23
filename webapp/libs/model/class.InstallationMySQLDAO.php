@@ -88,8 +88,11 @@ class InstallationMySQLDAO extends PDODAO {
         }
         $stats = array();
         foreach ($results as $result) {
-            $stats[] = array('version'=> $result['version'], 'count'=>$result['total_installs_per_version'],
-            'percentage'=>round(($result['total_installs_per_version']*100)/$total_users));
+            $version_percentage = round(($result['total_installs_per_version']*100)/$total_users);
+            if ($version_percentage > 0) {
+                $stats[] = array('version'=> $result['version'], 'count'=>$result['total_installs_per_version'],
+                'percentage'=>$version_percentage);
+            }
         }
         return $stats;
     }
