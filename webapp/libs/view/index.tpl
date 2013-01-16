@@ -51,8 +51,7 @@ $version_stats (optional) Array of counts and percentages of installations by ve
           <div class="nav-collapse">
             <ul class="nav">
               <li class="active"><a href="#">Home</a></li>
-              <li><a href="http://thinkupapp.com/">ThinkUpApp.com</a></li>
-              <li><a href="http://reports.expertlabs.org/fsmi/">FSMI</a></li>
+              <li><a href="http://thinkup.com/">ThinkUp.com</a></li>
             </ul>
           </div><!--/.nav-collapse -->
         </div>
