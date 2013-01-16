@@ -1,3 +1,3 @@
 # ThinkUp Analytics
 
-This internal Expert Labs-only webapp provides ThinkUp installation usage stats.
+This internal ThinkUp LLC-only webapp provides ThinkUp installation usage stats.
