@@ -28,9 +28,11 @@ class ProcessCallbackController extends Controller {
                         //strip www.
                         $host = preg_replace('#^www\.(.+\.)#i', '$1', $parsed_referer['host']);
                         $path = $parsed_referer['path'];
-                        //strip index.php
+                        //strip index and other root php files
                         $path = str_replace('user/index.php', '', $path);
                         $path = str_replace('index.php', '', $path);
+                        $path = str_replace('dashboard.php', '', $path);
+                        $path = str_replace('search.php', '', $path);
 
                         //add installation
                         $url = $parsed_referer['scheme'].'://'.$host.$path;
