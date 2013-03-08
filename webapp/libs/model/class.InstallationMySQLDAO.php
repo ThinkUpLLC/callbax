@@ -41,8 +41,38 @@ class InstallationMySQLDAO extends PDODAO {
         return $result['total'];
     }
 
+    public function getTotalActive(){
+        $q  = "SELECT COUNT(*) AS total FROM #prefix#installations ";
+        $q .= "WHERE last_seen >= date_sub(current_date, INTERVAL 1 month) ";
+        $ps = $this->execute($q);
+        $result = $this->getDataRowAsArray($ps);
+        return $result['total'];
+    }
+
     public function getPage($page, $limit){
         $q  = "SELECT i.*, u.* FROM #prefix#installations i JOIN #prefix#users u ON u.installation_id = i.id ";
+        //$q .= "ORDER BY i.id DESC, u.last_seen ASC LIMIT :start_on, :limit";
+        $q .= "ORDER BY follower_count DESC LIMIT :start_on, :limit";
+        $vars = array(
+            ':limit'=>($limit+1),
+            ':start_on'=>($limit*($page-1))
+        );
+        $ps = $this->execute($q, $vars);
+        $installations = $this->getDataRowsAsArrays($ps);
+        if (count($installations) > $limit) {
+            array_pop($installations);
+            $result['next_page'] = ($page+1);
+        } else {
+            $result['next_page'] = false;
+        }
+        $result['prev_page'] = ($page==1)?false:($page-1);
+        $result['installations'] = $installations;
+        return $result;
+    }
+
+    public function getPageActiveInstallations($page, $limit){
+        $q  = "SELECT i.*, u.* FROM #prefix#installations i JOIN #prefix#users u ON u.installation_id = i.id ";
+        $q .= "WHERE i.last_seen >= date_sub(current_date, INTERVAL 1 month) ";
         //$q .= "ORDER BY i.id DESC, u.last_seen ASC LIMIT :start_on, :limit";
         $q .= "ORDER BY follower_count DESC LIMIT :start_on, :limit";
         $vars = array(

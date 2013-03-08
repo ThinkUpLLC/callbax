@@ -74,6 +74,14 @@ class UserMySQLDAO extends PDODAO {
         return $result['total'];
     }
 
+    public function getTotalActive($days=null){
+        $q  = "SELECT COUNT(*) AS total FROM #prefix#users ";
+        $q .= "WHERE last_seen >= date_sub(current_date, INTERVAL 1 month) ";
+        $ps = $this->execute($q);
+        $result = $this->getDataRowAsArray($ps);
+        return $result['total'];
+    }
+
     public function deleteByInstallation($installation_id) {
         $q  = "DELETE FROM #prefix#users ";
         $q .= "WHERE installation_id=:installation_id;";

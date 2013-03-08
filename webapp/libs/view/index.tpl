@@ -1,11 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <title>ThinkUp Analytics</title>
-    <meta name="description" content="">
-    <meta name="author" content="ThinkUp LLC">
-
 {*
 Render a page of installations.
 
@@ -18,6 +10,14 @@ $service_stats (optional) Array of counts and percentages of service users by ne
 $host_stats (optional) Array of counts and percentages of installations by hosting provider
 $version_stats (optional) Array of counts and percentages of installations by version
 *}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>ThinkUp Analytics</title>
+    <meta name="description" content="">
+    <meta name="author" content="ThinkUp LLC">
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
     <!--[if lt IE 9]>
@@ -61,6 +61,13 @@ $version_stats (optional) Array of counts and percentages of installations by ve
     <div class="container">
 
     <div class="span2 offset1 alert alert-error">
+        <h4>Past Month</h4>
+        <h1>{$total_active_users|number_format} <h1>
+        <h4>service users<h4>
+        <h1>{$total_active_installations|number_format} <h1>
+        <h4>installations<h4>
+        <hr />
+        <h4>All Time</h4>
         <h1>{$total_users|number_format} <h1>
         <h4>service users<h4>
         <h1>{$total_installations|number_format} <h1>
@@ -132,13 +139,13 @@ $version_stats (optional) Array of counts and percentages of installations by ve
               </div>
             </div>
 {/if}
-
           </div>
           
     </div>
 
     <div class="span12">
-    
+
+{if $smarty.get.l neq 'active'}<a href="?l=active">Active</a>{else}Active{/if} | {if $smarty.get.l neq 'all'}<a href="?l=all">All-time</a>{else}All-time{/if}
 <table class="table-striped table-bordered table-condensed">
     <thead>
         <th>User</th>
@@ -162,7 +169,7 @@ $version_stats (optional) Array of counts and percentages of installations by ve
     </div>
 
     </div> <!-- /container -->
-<a href="?page={$next_page}">Next page</a>
+<a href="?page={$next_page}&l={$smarty.get.l}">Next page</a>
 <div class="footer span 12">&nbsp;</div>
 
     <!-- Le javascript
