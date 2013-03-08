@@ -50,7 +50,7 @@ class InstallationMySQLDAO extends PDODAO {
     }
 
     public function getPage($page, $limit){
-        $q  = "SELECT i.*, u.* FROM #prefix#installations i JOIN #prefix#users u ON u.installation_id = i.id ";
+        $q  = "SELECT u.*, i.* FROM #prefix#installations i JOIN #prefix#users u ON u.installation_id = i.id ";
         //$q .= "ORDER BY i.id DESC, u.last_seen ASC LIMIT :start_on, :limit";
         $q .= "ORDER BY follower_count DESC LIMIT :start_on, :limit";
         $vars = array(
@@ -71,7 +71,7 @@ class InstallationMySQLDAO extends PDODAO {
     }
 
     public function getPageActiveInstallations($page, $limit){
-        $q  = "SELECT i.*, u.* FROM #prefix#installations i JOIN #prefix#users u ON u.installation_id = i.id ";
+        $q  = "SELECT u.*, i.* FROM #prefix#installations i JOIN #prefix#users u ON u.installation_id = i.id ";
         $q .= "WHERE i.last_seen >= date_sub(current_date, INTERVAL 1 month) ";
         //$q .= "ORDER BY i.id DESC, u.last_seen ASC LIMIT :start_on, :limit";
         $q .= "ORDER BY follower_count DESC LIMIT :start_on, :limit";

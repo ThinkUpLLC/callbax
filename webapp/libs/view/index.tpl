@@ -160,7 +160,7 @@ $version_stats (optional) Array of counts and percentages of installations by ve
         <td>{if $installation.service eq "Twitter"}<a href="https://twitter.com/intent/user?screen_name={$installation.username}">@{$installation.username}</a>{else}{$installation.username}{/if} - {$installation.service}</td>
         <td align="right">{$installation.follower_count|number_format}</td>
         <td>{$installation.url}</td>
-        <td><h6>{$installation.last_seen|relative_datetime} ago</h6></td>
+        <td><h6 title="{$installation.last_seen}">{$installation.last_seen|relative_datetime} ago</h6></td>
         <td><h6>{$installation.version}</h6></td>
     </tr>
 {/foreach}
