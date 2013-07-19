@@ -39,7 +39,7 @@ class CaptureFollowerCountsController {
                 foreach ($usernames_to_update as $username_to_check) {
                     if (!in_array($username_to_check, $updated_usernames)) {
                         //haven't gotten follower count, don't check again for 30 days
-                        $user_dao->updateFollowerCount('twitter', $username_to_check);
+                        $user_dao->updateLastFollowerCount('twitter', $username_to_check);
                         $total_unsuccessfully_fetched_counts++;
                     }
                 }
