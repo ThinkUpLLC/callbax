@@ -55,13 +55,16 @@ class TestOfProcessCallbackController extends CallbaxUnitTestCase {
         $builders[] = FixtureBuilder::build('callbacks', array('id'=>10,
         'referrer'=>'http://www.timomcd.com/thinkup/user/index.php?u=YaYayoLLL&n=twitter',
         'version'=>'0.15', 'last_seen'=>'-1h'));
+        $builders[] = FixtureBuilder::build('callbacks', array('id'=>11,
+        'referrer'=>'http://www.thinkup.com/users/MitchWagner/?u=MitchWagner&n=twitter',
+        'version'=>'2.0-beta.8', 'last_seen'=>'-1h'));
 
         $results = $controller->control();
         $this->assertEqual($results, '');
 
         $ps = CallbackMySQLDAO::$PDO->query("SELECT COUNT(*) AS total FROM cb_installations;");
         $data = $ps->fetchAll();
-        $this->assertEqual($data[0]['total'], 4);
+        $this->assertEqual($data[0]['total'], 5);
 
         $ps = CallbackMySQLDAO::$PDO->query("SELECT * FROM cb_installations;");
         $data = $ps->fetchAll();
@@ -69,6 +72,7 @@ class TestOfProcessCallbackController extends CallbaxUnitTestCase {
         $this->assertEqual($data[1]['url'], 'http://expertlabs.aaas.org/thinkup01/');
         $this->assertEqual($data[2]['url'], 'http://smarterware.org/thinkup/');
         $this->assertEqual($data[3]['url'], 'http://timomcd.com/thinkup/');
+        $this->assertEqual($data[4]['url'], 'http://thinkup.com/users/MitchWagner/');
 
         $ps = CallbackMySQLDAO::$PDO->query("SELECT * FROM cb_users;");
         $data = $ps->fetchAll();
@@ -99,7 +103,7 @@ class TestOfProcessCallbackController extends CallbaxUnitTestCase {
 
         $ps = CallbackMySQLDAO::$PDO->query("SELECT COUNT(*) AS total FROM cb_installations;");
         $data = $ps->fetchAll();
-        $this->assertEqual($data[0]['total'], 4);
+        $this->assertEqual($data[0]['total'], 5);
 
         //installations should have is_opted_out value set correctly
         $ps = CallbackMySQLDAO::$PDO->query("SELECT * FROM cb_installations;");
