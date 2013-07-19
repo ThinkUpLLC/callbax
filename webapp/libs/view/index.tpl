@@ -145,7 +145,7 @@ $version_stats (optional) Array of counts and percentages of installations by ve
 
     <div class="span12">
 
-{if $smarty.get.l neq 'active'}<a href="?l=active">Active</a>{else}Active{/if} | {if $smarty.get.l neq 'all'}<a href="?l=all">All-time</a>{else}All-time{/if}
+{if !isset($smarty.get.l) or $smarty.get.l neq 'active'}<a href="?l=active">Active</a>{else}Active{/if} | {if !isset($smarty.get.l) or $smarty.get.l neq 'all'}<a href="?l=all">All-time</a>{else}All-time{/if}
 <table class="table-striped table-bordered table-condensed">
     <thead>
         <th>User</th>
@@ -169,7 +169,7 @@ $version_stats (optional) Array of counts and percentages of installations by ve
     </div>
 
     </div> <!-- /container -->
-<a href="?page={$next_page}&l={$smarty.get.l}">Next page</a>
+<a href="?page={$next_page}{if isset($smarty.get.l)}&l={$smarty.get.l}{/if}">Next page</a>
 <div class="footer span 12">&nbsp;</div>
 
     <!-- Le javascript

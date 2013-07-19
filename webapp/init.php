@@ -32,4 +32,6 @@ if ( version_compare(PHP_VERSION, '5.2', '<') ) {
 
 //Register our lazy class loader
 require_once 'extlibs/isosceles/libs/model/class.Loader.php';
+require_once 'extlibs/twitteroauth/OAuth.php';
+require_once 'extlibs/twitteroauth/twitteroauth.php';
 Loader::register(array(dirname(__FILE__).'/libs/model/', dirname(__FILE__).'/libs/controller/'));
