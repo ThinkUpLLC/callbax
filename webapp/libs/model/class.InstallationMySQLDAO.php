@@ -43,7 +43,7 @@ class InstallationMySQLDAO extends PDODAO {
 
     public function getTotalActive(){
         $q  = "SELECT COUNT(*) AS total FROM #prefix#installations ";
-        $q .= "WHERE last_seen >= date_sub(current_date, INTERVAL 1 month) ";
+        $q .= "WHERE last_seen >= date_sub(current_date, INTERVAL 1 week) ";
         $ps = $this->execute($q);
         $result = $this->getDataRowAsArray($ps);
         return $result['total'];
@@ -72,7 +72,7 @@ class InstallationMySQLDAO extends PDODAO {
 
     public function getPageActiveInstallations($page, $limit){
         $q  = "SELECT u.*, i.* FROM #prefix#installations i JOIN #prefix#users u ON u.installation_id = i.id ";
-        $q .= "WHERE i.last_seen >= date_sub(current_date, INTERVAL 1 month) ";
+        $q .= "WHERE i.last_seen >= date_sub(current_date, INTERVAL 1 week) ";
         //$q .= "ORDER BY i.id DESC, u.last_seen ASC LIMIT :start_on, :limit";
         $q .= "ORDER BY follower_count DESC LIMIT :start_on, :limit";
         $vars = array(

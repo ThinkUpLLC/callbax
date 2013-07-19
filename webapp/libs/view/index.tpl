@@ -61,7 +61,7 @@ $version_stats (optional) Array of counts and percentages of installations by ve
     <div class="container">
 
     <div class="span2 offset1 alert alert-error">
-        <h4>Past Month</h4>
+        <h4>Past Week</h4>
         <h1>{$total_active_users|number_format} <h1>
         <h4>service users<h4>
         <h1>{$total_active_installations|number_format} <h1>
