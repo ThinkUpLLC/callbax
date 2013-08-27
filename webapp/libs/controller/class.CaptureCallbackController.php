@@ -8,8 +8,13 @@ class CaptureCallbackController extends Controller {
             } else {
                 $is_opted_out = false;
             }
-            $callback_dao = new CallbackMySQLDAO();
-            $callback_dao->insert($_SERVER['HTTP_REFERER'], $_GET['v'], $is_opted_out);
+            $referer = $_SERVER['HTTP_REFERER'];
+            $parsed_referer = parse_url($referer);
+            //only process URLs with service users defined
+            if (isset($parsed_referer['host'])) {
+                $callback_dao = new CallbackMySQLDAO();
+                $callback_dao->insert($_SERVER['HTTP_REFERER'], $_GET['v'], $is_opted_out);
+            }
         }
         return '';
     }
