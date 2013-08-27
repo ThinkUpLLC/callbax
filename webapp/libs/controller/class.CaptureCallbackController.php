@@ -10,10 +10,13 @@ class CaptureCallbackController extends Controller {
             }
             $referer = $_SERVER['HTTP_REFERER'];
             $parsed_referer = parse_url($referer);
-            //only process URLs with service users defined
+            //only process URLs with a host set
             if (isset($parsed_referer['host'])) {
-                $callback_dao = new CallbackMySQLDAO();
-                $callback_dao->insert($_SERVER['HTTP_REFERER'], $_GET['v'], $is_opted_out);
+                //don't process URLs from thinkup.com
+                if (strrpos($parsed_referer['host'], 'thinkup.com') === false) {
+                    $callback_dao = new CallbackMySQLDAO();
+                    $callback_dao->insert($_SERVER['HTTP_REFERER'], $_GET['v'], $is_opted_out);
+                }
             }
         }
         return '';

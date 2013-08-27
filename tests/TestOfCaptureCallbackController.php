@@ -82,5 +82,27 @@ class TestOfCaptureCallbackController extends CallbaxUnitTestCase {
         $ps = CallbackMySQLDAO::$PDO->query("SELECT COUNT(*) AS total FROM cb_callbacks;");
         $data = $ps->fetchAll();
         $this->assertEqual($data[0]['total'], 1);
+
+        //referer from thinkup.com
+        // https://www.thinkup.com/user/MitchWagner/
+        $_SERVER['HTTP_REFERER'] = 'https://www.thinkup.com/user/MitchWagner/';
+        $_GET['v'] = '0.15';
+        $results = $controller->control();
+        $this->assertEqual($results, '');
+
+        $ps = CallbackMySQLDAO::$PDO->query("SELECT COUNT(*) AS total FROM cb_callbacks;");
+        $data = $ps->fetchAll();
+        $this->assertEqual($data[0]['total'], 1);
+
+        //referer from thinkup.com
+        // https://anildash.thinkup.com
+        $_SERVER['HTTP_REFERER'] = 'https://anildash.thinkup.com';
+        $_GET['v'] = '0.15';
+        $results = $controller->control();
+        $this->assertEqual($results, '');
+
+        $ps = CallbackMySQLDAO::$PDO->query("SELECT COUNT(*) AS total FROM cb_callbacks;");
+        $data = $ps->fetchAll();
+        $this->assertEqual($data[0]['total'], 1);
     }
 }
