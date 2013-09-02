@@ -28,6 +28,15 @@ class TestOfCallbackMySQLDAO extends CallbaxUnitTestCase {
         $this->assertEqual(3, $result);
     }
 
+    public function testInsertIgnore() {
+        $dao = new CallbackMySQLDAO();
+        $result = $dao->insert('my referrer 1', '0.14');
+        $this->assertEqual(1, $result);
+
+        $result = $dao->insert('my referrer 1', '0.14');
+        $this->assertFalse($result);
+    }
+
     public function testDelete() {
         $dao = new CallbackMySQLDAO();
         $result = $dao->insert('my referrer', '0.14');

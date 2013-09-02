@@ -2,7 +2,7 @@
 class CallbackMySQLDAO extends PDODAO {
     public function insert($referrer, $version, $is_opted_out = false) {
         $is_opted_out = self::convertBoolToDB($is_opted_out);
-        $q  = "INSERT INTO #prefix#callbacks ";
+        $q  = "INSERT IGNORE INTO #prefix#callbacks ";
         $q .= "(referrer, version, is_opted_out) ";
         $q .= "VALUES ( :referrer, :version, :is_opted_out ) ";
         $vars = array(
